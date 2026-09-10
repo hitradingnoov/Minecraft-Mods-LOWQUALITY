@@ -184,7 +184,7 @@
             padding: 4px 12px 4px 6px;
             border-radius: 20px;
         }
-        .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #8b5cf6; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #8b5cf6; background-color: #1e2333; }
         .user-name { font-size: 13px; font-weight: 700; color: #ffffff; }
 
         .items-bar {
@@ -351,7 +351,7 @@
                 <button class="btn-login" id="login-button">Log In</button>
 
                 <div class="user-profile-box" id="user-profile-box">
-                    <img src="" alt="Avatar" class="user-avatar" id="header-avatar">
+                    <img src="" alt="Avatar" class="user-avatar" id="header-avatar" onerror="this.onerror=null; this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png';">
                     <span class="user-name" id="header-username">User</span>
                 </div>
             </div>
@@ -520,7 +520,7 @@
 
                 if (data.success) {
                     loginModal.style.display = 'none';
-                    location.reload(); // Sayfayı yenile ve oturum verilerini çerezden yükle
+                    location.reload();
                 } else {
                     showModalError(data.message);
                 }
