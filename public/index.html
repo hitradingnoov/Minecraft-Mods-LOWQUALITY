@@ -12,107 +12,205 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: #0f1015;
+            background-color: #0b0c10;
             color: #ffffff;
-            min-height: 100vh;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Left Sidebar */
+        aside.sidebar {
+            width: 240px;
+            background-color: #12141c;
+            border-right: 1px solid #1e2230;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 15px;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fbbf24;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .nav-item {
+            color: #9ca3af;
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: #1a1d29;
+            color: #fff;
+        }
+
+        /* Main Wrapper */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
         header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            padding: 20px 40px;
-            background-color: #15171e;
-            border-bottom: 1px solid #222634;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #6366f1;
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
+            padding: 15px 30px;
+            background-color: #12141c;
+            border-bottom: 1px solid #1e2230;
             gap: 20px;
-            align-items: center;
         }
         .login-btn {
-            background-color: #6366f1;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+            background-color: #fbbf24;
+            color: #0b0c10;
+            padding: 8px 20px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
-            transition: background 0.2s;
+            font-size: 14px;
+            transition: 0.2s;
         }
         .login-btn:hover {
-            background-color: #4f46e5;
+            background-color: #f59e0b;
         }
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-        }
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        .hero p {
-            color: #9ca3af;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-        .auth-options {
+
+        /* Content Area */
+        .content {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
         }
-        .auth-option-btn {
-            padding: 10px 20px;
+        .hero-banner {
+            flex: 1;
+            background: linear-gradient(135deg, #181b28 0%, #12141c 100%);
+            border: 1px solid #1e2230;
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero-banner h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+        .hero-banner h1 span {
+            color: #fbbf24;
+        }
+        .hero-banner p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .auth-btn {
+            padding: 8px 16px;
             border-radius: 6px;
             color: white;
             text-decoration: none;
+            font-size: 13px;
             font-weight: 500;
         }
-        .btn-google { background-color: #db4437; }
-        .btn-roblox { background-color: #000000; border: 1px solid #333; }
         .btn-discord { background-color: #5865F2; }
+        .btn-google { background-color: #db4437; }
+        .btn-roblox { background-color: #222; border: 1px solid #444; }
+
+        /* Right Chat Sidebar */
+        aside.chat-sidebar {
+            width: 280px;
+            background-color: #12141c;
+            border-left: 1px solid #1e2230;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .chat-header {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #1e2230;
+            padding-bottom: 10px;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            font-size: 12px;
+            color: #9ca3af;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="/" class="logo">Buxify</a>
-        <div class="nav-links">
-            <a href="#" class="login-btn">Log in</a>
-        </div>
-    </header>
+    <!-- Sol Menü -->
+    <aside class="sidebar">
+        <a href="/" class="logo">⚡ BUXIFY</a>
+        <a href="#" class="nav-item active">🎲 Casino</a>
+        <a href="#" class="nav-item">🎰 Slots</a>
+        <a href="#" class="nav-item">🃏 Blackjack</a>
+        <a href="#" class="nav-item">🎯 Roulette</a>
+        <a href="#" class="nav-item">💬 Support</a>
+    </aside>
 
-    <main class="hero">
-        <h1>Welcome to Buxify</h1>
-        <p>The ultimate dark-themed gaming platform. Choose your login provider below:</p>
-        
-        <div class="auth-options">
-            <a href="/auth/google" class="auth-option-btn btn-google">Google ile Giriş</a>
-            <a href="/auth/roblox" class="auth-option-btn btn-roblox">Roblox ile Giriş</a>
-            <a href="/auth/discord" class="auth-option-btn btn-discord">Discord ile Giriş</a>
+    <!-- Orta Alan -->
+    <div class="main-wrapper">
+        <header>
+            <a href="#" class="login-btn">Log in</a>
+        </header>
+
+        <div class="content">
+            <div class="hero-banner">
+                <h1>Bet, win, and cash out <span>your way.</span></h1>
+                <p>Deposit instantly with crypto, cards or gift cards. Play games, then cash out securely.</p>
+                
+                <div style="font-size: 13px; color: #9ca3af; margin-bottom: 8px;">or continue with:</div>
+                <div class="auth-buttons">
+                    <a href="/auth/discord" class="auth-btn btn-discord">Discord</a>
+                    <a href="/auth/google" class="auth-btn btn-google">Google</a>
+                    <a href="/auth/roblox" class="auth-btn btn-roblox">Roblox</a>
+                </div>
+            </div>
         </div>
-    </main>
+    </div>
+
+    <!-- Sağ Chat Paneli -->
+    <aside class="chat-sidebar">
+        <div class="chat-header">Chat</div>
+        <div class="chat-messages">
+            <div><strong>trout7126:</strong>gg win</div>
+            <div><strong>arabella:</strong>let's gooo</div>
+            <div><strong>questDuong:</strong>nice round</div>
+        </div>
+    </aside>
 
     <script>
-        // URL'den giriş verilerini yakalayıp arayüzü güncelleme
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('login') === 'success') {
-            const username = urlParams.get('user');
-            
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        const cookieValue = getCookie('buxify_user');
+        if (cookieValue) {
+            const username = decodeURIComponent(cookieValue);
             const authButton = document.querySelector('.login-btn');
             if (authButton) {
                 authButton.innerHTML = `👤 ${username}`;
                 authButton.href = "#";
-                authButton.style.backgroundColor = "#10b981"; // Başarılı giriş rengi (Yeşil)
+                authButton.style.backgroundColor = "#10b981";
+                authButton.style.color = "#ffffff";
             }
-            
-            // Adres çubuğunu temizle
-            window.history.replaceState({}, document.title, window.location.pathname);
         }
     </script>
 </body>
