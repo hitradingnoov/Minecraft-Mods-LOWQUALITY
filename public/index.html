@@ -1,307 +1,119 @@
 <!DOCTYPE html>
-<html lang="tr" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUXIFY - Bet, Win & Cash Out</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            gold: '#FACC15',
-                            goldHover: '#EAB308',
-                            bg: '#0D0E1A',
-                            sidebar: '#131525',
-                            card: '#1A1D33',
-                            cardBorder: '#282C4B',
-                            discord: '#5865F2',
-                            roblox: '#2D3238'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Buxify - Gaming Platform</title>
     <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0D0E1A; }
-        ::-webkit-scrollbar-thumb { background: #282C4B; border-radius: 3px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0f1015;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #15171e;
+            border-bottom: 1px solid #222634;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6366f1;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .login-btn {
+            background-color: #6366f1;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background-color: #4f46e5;
+        }
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            color: #9ca3af;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .auth-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .auth-option-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .btn-google { background-color: #db4437; }
+        .btn-roblox { background-color: #000000; border: 1px solid #333; }
+        .btn-discord { background-color: #5865F2; }
     </style>
 </head>
-<body class="bg-brand-bg text-gray-200 font-sans antialiased min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Top Bar / Header -->
-    <header class="w-full h-16 bg-brand-sidebar border-b border-brand-cardBorder flex items-center justify-between px-4 fixed top-0 z-50">
-        <div class="flex items-center gap-4">
-            <button class="text-gray-400 hover:text-white lg:hidden">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
-            <a href="#" class="flex items-center gap-2">
-                <i class="fa-solid fa-bolt text-brand-gold text-2xl"></i>
-                <span class="text-2xl font-black tracking-wider text-white">BUXIFY</span>
-            </a>
-        </div>
-        <div class="flex items-center gap-3">
-            <a href="/login" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-5 py-2 rounded-lg text-sm transition">
-                Log in
-            </a>
+    <header>
+        <a href="/" class="logo">Buxify</a>
+        <div class="nav-links">
+            <a href="#" class="login-btn">Log in</a>
         </div>
     </header>
 
-    <div class="flex pt-16 min-h-screen">
-        <!-- Left Sidebar Navigation -->
-        <aside class="w-64 bg-brand-sidebar border-r border-brand-cardBorder hidden lg:flex flex-col justify-between p-4 fixed left-0 top-16 bottom-0 overflow-y-auto">
-            <div class="space-y-6">
-                <!-- Games Category -->
-                <div>
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Games</span>
-                    <nav class="mt-2 space-y-1">
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-shield-halved text-brand-gold"></i> Poker
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-dice text-brand-gold"></i> Casino
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-cubes"></i> Slots
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-clover"></i> Blackjack
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-circle-notch"></i> Roulette
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-rocket"></i> Crash
-                        </a>
-                    </nav>
-                </div>
+    <main class="hero">
+        <h1>Welcome to Buxify</h1>
+        <p>The ultimate dark-themed gaming platform. Choose your login provider below:</p>
+        
+        <div class="auth-options">
+            <a href="/auth/google" class="auth-option-btn btn-google">Google ile Giriş</a>
+            <a href="/auth/roblox" class="auth-option-btn btn-roblox">Roblox ile Giriş</a>
+            <a href="/auth/discord" class="auth-option-btn btn-discord">Discord ile Giriş</a>
+        </div>
+    </main>
 
-                <!-- Community Category -->
-                <div>
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Community</span>
-                    <nav class="mt-2 space-y-1">
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-trophy text-brand-gold"></i> Bounties
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-solid fa-headset"></i> Support
-                        </a>
-                        <a href="https://discord.gg" target="_blank" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-brand-card hover:text-white rounded-lg transition">
-                            <i class="fa-brands fa-discord text-brand-discord"></i> Discord
-                        </a>
-                    </nav>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 lg:ml-64 lg:mr-80 p-4 lg:p-6 space-y-8">
+    <script>
+        // URL'den giriş verilerini yakalayıp arayüzü güncelleme
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('login') === 'success') {
+            const username = urlParams.get('user');
             
-            <!-- Hero Banner & Registration Card -->
-            <div class="bg-gradient-to-r from-brand-card to-brand-sidebar border border-brand-cardBorder rounded-2xl p-6 lg:p-10 relative overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10 relative">
-                    
-                    <!-- Left: Hero Action Section -->
-                    <div class="space-y-6">
-                        <h1 class="text-3xl lg:text-5xl font-black text-white leading-tight">
-                            Bet, win, and <span class="text-brand-gold">cash out</span> your way.
-                        </h1>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Deposit instantly with crypto, cards or gift cards. Play games, then cash your winnings out for gift cards or crypto.
-                        </p>
-                        
-                        <!-- Features checklist -->
-                        <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-300">
-                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-brand-gold"></i> Instant deposits</span>
-                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-brand-gold"></i> Provably fair originals</span>
-                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-brand-gold"></i> Cash out to gift cards & crypto</span>
-                        </div>
-
-                        <!-- Registration Form -->
-                        <form action="/register" method="POST" class="space-y-3 pt-2">
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <input type="email" name="email" placeholder="Enter your email address" class="bg-brand-bg border border-brand-cardBorder text-white px-4 py-3 rounded-xl focus:outline-none focus:border-brand-gold flex-1 text-sm">
-                                <button type="submit" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-6 py-3 rounded-xl text-sm transition">
-                                    Sign up
-                                </button>
-                            </div>
-
-                            <!-- Social Login Buttons (Discord, Google, Roblox) -->
-                            <div class="flex flex-wrap items-center gap-2 pt-2">
-                                <span class="text-xs text-gray-400">or continue with:</span>
-                                
-                                <a href="/auth/discord" class="bg-brand-discord hover:opacity-90 text-white font-medium text-xs px-3 py-2 rounded-lg flex items-center gap-2 transition">
-                                    <i class="fa-brands fa-discord"></i> Discord
-                                </a>
-
-                                <a href="/auth/google" class="bg-white hover:bg-gray-100 text-gray-800 font-medium text-xs px-3 py-2 rounded-lg flex items-center gap-2 transition">
-                                    <i class="fa-brands fa-google text-red-500"></i> Google
-                                </a>
-
-                                <a href="/auth/roblox" class="bg-brand-roblox hover:bg-gray-700 text-white font-medium text-xs px-3 py-2 rounded-lg flex items-center gap-2 transition border border-gray-600">
-                                    <i class="fa-solid fa-cube text-red-500"></i> Roblox
-                                </a>
-                            </div>
-
-                            <p class="text-xs text-gray-400 pt-1">
-                                Already have an account? <a href="/login" class="text-brand-gold underline font-semibold">Log in</a>
-                            </p>
-                        </form>
-
-                        <div class="text-[10px] text-gray-500 flex items-center gap-2 pt-2">
-                            <span class="border border-red-500/40 text-red-400 font-bold px-1.5 py-0.5 rounded">18+</span>
-                            <span>You must be at least 18 years old to play. Buxify is not affiliated, associated, or partnered with any video game platforms.</span>
-                        </div>
-                    </div>
-
-                    <!-- Right: Game Cards Showcase -->
-                    <div class="hidden lg:grid grid-cols-2 gap-3 transform rotate-3 scale-95">
-                        <div class="bg-gradient-to-br from-purple-600 to-indigo-800 p-4 rounded-2xl h-40 flex flex-col justify-between shadow-lg">
-                            <span class="font-black text-white text-lg">LE FISHERMAN</span>
-                            <i class="fa-solid fa-fish text-4xl text-white/40 self-end"></i>
-                        </div>
-                        <div class="bg-gradient-to-br from-pink-600 to-rose-800 p-4 rounded-2xl h-40 flex flex-col justify-between shadow-lg">
-                            <span class="font-black text-white text-lg">SWEET RUSH</span>
-                            <i class="fa-solid fa-candy-cane text-4xl text-white/40 self-end"></i>
-                        </div>
-                        <div class="bg-gradient-to-br from-blue-600 to-cyan-800 p-4 rounded-2xl h-40 flex flex-col justify-between shadow-lg">
-                            <span class="font-black text-white text-lg">THE COUNT</span>
-                            <i class="fa-solid fa-ghost text-4xl text-white/40 self-end"></i>
-                        </div>
-                        <div class="bg-gradient-to-br from-amber-500 to-orange-700 p-4 rounded-2xl h-40 flex flex-col justify-between shadow-lg">
-                            <span class="font-black text-white text-lg">SEAMER</span>
-                            <i class="fa-solid fa-anchor text-4xl text-white/40 self-end"></i>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Leaderboard / Race Section -->
-            <div class="bg-brand-sidebar border border-brand-cardBorder rounded-2xl p-6">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-2">
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-trophy text-brand-gold"></i> The race is on for <span class="text-brand-gold">2.5M!</span>
-                    </h2>
-                    <span class="text-xs bg-brand-card border border-brand-cardBorder px-3 py-1.5 rounded-lg text-gray-400 font-mono">
-                        Ends in: 24:18:46:36
-                    </span>
-                </div>
-
-                <!-- Table -->
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-400">
-                        <thead class="bg-brand-card text-xs text-gray-500 uppercase border-b border-brand-cardBorder">
-                            <tr>
-                                <th class="py-3 px-4">Rank</th>
-                                <th class="py-3 px-4">Username</th>
-                                <th class="py-3 px-4">Total Wagered</th>
-                                <th class="py-3 px-4">Prize</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-brand-cardBorder">
-                            <tr class="hover:bg-brand-card/50">
-                                <td class="py-3 px-4 font-bold text-brand-gold">#1</td>
-                                <td class="py-3 px-4 text-white flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center font-bold text-xs">T</div>
-                                    trout7126
-                                </td>
-                                <td class="py-3 px-4">70,796,945</td>
-                                <td class="py-3 px-4 font-semibold text-brand-gold">1,000,000</td>
-                            </tr>
-                            <tr class="hover:bg-brand-card/50">
-                                <td class="py-3 px-4 font-bold text-gray-300">#2</td>
-                                <td class="py-3 px-4 text-white flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-gray-500/20 text-gray-300 flex items-center justify-center font-bold text-xs">A</div>
-                                    arabellafigg1481
-                                </td>
-                                <td class="py-3 px-4">60,700,017</td>
-                                <td class="py-3 px-4 font-semibold text-brand-gold">500,000</td>
-                            </tr>
-                            <tr class="hover:bg-brand-card/50">
-                                <td class="py-3 px-4 font-bold text-amber-700">#3</td>
-                                <td class="py-3 px-4 text-white flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-amber-700/20 text-amber-700 flex items-center justify-center font-bold text-xs">Q</div>
-                                    QuanDuong
-                                </td>
-                                <td class="py-3 px-4">19,040,616</td>
-                                <td class="py-3 px-4 font-semibold text-brand-gold">362,500</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- Right Live Chat Panel -->
-        <aside class="w-80 bg-brand-sidebar border-l border-brand-cardBorder hidden xl:flex flex-col justify-between fixed right-0 top-16 bottom-0">
-            <!-- Chat Header -->
-            <div class="p-4 border-b border-brand-cardBorder flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-comments text-brand-gold"></i>
-                    <span class="font-bold text-white text-sm">Live Chat</span>
-                </div>
-                <span class="text-xs bg-emerald-500/10 text-emerald-400 font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> 72 online
-                </span>
-            </div>
-
-            <!-- Rain Pool Banner -->
-            <div class="m-3 p-3 bg-brand-card border border-brand-cardBorder rounded-xl space-y-1">
-                <div class="flex justify-between text-xs">
-                    <span class="text-gray-400 font-semibold">RAIN POOL</span>
-                    <span class="text-brand-gold font-mono">7,604.68</span>
-                </div>
-                <div class="w-full bg-brand-bg h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-brand-gold h-full w-2/3"></div>
-                </div>
-            </div>
-
-            <!-- Chat Messages Area -->
-            <div class="flex-1 p-4 overflow-y-auto space-y-4 text-xs">
-                <div class="flex items-start gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-600/30 text-indigo-400 flex items-center justify-center font-bold">B</div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-white">Beedu2001</span>
-                            <span class="text-[10px] text-gray-500">02:24 AM</span>
-                        </div>
-                        <p class="text-gray-300 mt-0.5">heh</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-emerald-600/30 text-emerald-400 flex items-center justify-center font-bold">R</div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-white">raichu3974</span>
-                            <span class="text-[10px] text-gray-500">02:24 AM</span>
-                        </div>
-                        <p class="text-gray-300 mt-0.5">so close</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chat Input -->
-            <div class="p-3 border-t border-brand-cardBorder">
-                <div class="flex items-center bg-brand-bg border border-brand-cardBorder rounded-xl px-3 py-2">
-                    <input type="text" placeholder="Enter your message..." class="bg-transparent text-xs text-white focus:outline-none w-full">
-                    <button class="text-brand-gold hover:text-white transition">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </aside>
-    </div>
-
+            const authButton = document.querySelector('.login-btn');
+            if (authButton) {
+                authButton.innerHTML = `👤 ${username}`;
+                authButton.href = "#";
+                authButton.style.backgroundColor = "#10b981"; // Başarılı giriş rengi (Yeşil)
+            }
+            
+            // Adres çubuğunu temizle
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 </body>
 </html>
