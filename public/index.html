@@ -629,20 +629,10 @@
             modalError.style.display = 'block';
         }
 
-        // Profile Modal Açma / Kapama
-        profileBox.addEventListener('click', () => {
-            profileModal.style.display = 'flex';
-        });
-
-        closeProfileBtn.addEventListener('click', () => {
-            profileModal.style.display = 'none';
-        });
-
-        btnLogout.addEventListener('click', () => {
-            document.cookie = 'user_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            location.reload();
-        });
-
+        // Profil kutusuna tıklandığında yeni profil sayfasına yönlendir
+profileBox.addEventListener('click', () => {
+    window.location.href = '/profile.html';
+});
         // Cookie Okuma & Kullanıcı Profilini Doldurma
         function getCookie(name) {
             const value = `; ${document.cookie}`;
