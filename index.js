@@ -56,7 +56,16 @@ app.post('/api/verify-bio', async (req, res) => {
         const userBio = profileRes.data.description || "";
 
         if (userBio.includes(expectedCode)) {
-            const avatarUrl = `https://tr.rbxcdn.com/30DAY-AvatarHeadshot-${userId}`;
+            // Roblox Resmi Thumbnails API'sinden Avatar Resmini Çekiyoruz
+let avatarUrl = '';
+try {
+    const thumbRes = await axios.get(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`);
+    if (thumbRes.data && thumbRes.data.data && thumbRes.data.data.length > 0) {
+        avatarUrl = thumbRes.data.data[0].imageUrl;
+    }
+} catch (e) {
+    console.error('Avatar resmi çekilemedi:', e.message);
+}
             const userData = {
                 id: userId,
                 username: displayName,
