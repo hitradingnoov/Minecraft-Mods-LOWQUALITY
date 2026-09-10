@@ -1,10 +1,14 @@
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
+const { createClient } = require('@supabase/supabase-js');
 const config = require('./config');
 
 const app = express();
 const PORT = config.PORT;
+
+// Supabase İstemcisi
+const supabase = createClient(config.supabase.url, config.supabase.anonKey);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,7 +48,16 @@ app.get('/auth/google/callback', async (req, res) => {
         });
 
         const googleUser = userResponse.data;
-        res.send(`Hoş geldin ${googleUser.name}! (${googleUser.email}) Google ile giriş başarılı.`);
+
+        await supabase.from('users').upsert({
+            provider_id: googleUser.id,
+            provider: 'google',
+            email: googleUser.email,
+            username: googleUser.name,
+            avatar_url: googleUser.picture
+        }, { onConflict: 'provider_id' });
+
+        res.redirect(`/?login=success&user=${encodeURIComponent(googleUser.name)}`);
     } catch (error) {
         console.error('Google OAuth Hatası:', error.response?.data || error.message);
         res.status(500).send('Google ile giriş hatası.');
@@ -68,11 +81,11 @@ app.get('/auth/roblox/callback', async (req, res) => {
 
     try {
         const credentials = Buffer.from(`${config.roblox.clientId}:${config.roblox.clientSecret}`).toString('base64');
-
-        const params = new URLSearchParams();
-        params.append('grant_type', 'authorization_code');
-        params.append('code', code);
-        params.append('redirect_uri', config.roblox.callbackUrl);
+        const params = new URLSearchParams({
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: config.roblox.callbackUrl
+        });
 
         const tokenResponse = await axios.post('https://apis.roblox.com/oauth/v1/token', params, {
             headers: {
@@ -81,17 +94,25 @@ app.get('/auth/roblox/callback', async (req, res) => {
             }
         });
 
-        const { access_token } = tokenResponse.data;
-
         const userResponse = await axios.get('https://apis.roblox.com/oauth/v1/userinfo', {
-            headers: { Authorization: `Bearer ${access_token}` }
+            headers: { Authorization: `Bearer ${tokenResponse.data.access_token}` }
         });
 
         const robloxUser = userResponse.data;
-        res.send(`Hoş geldin ${robloxUser.preferred_username || robloxUser.name}! Roblox ID: ${robloxUser.sub}`);
+        const username = robloxUser.preferred_username || robloxUser.name;
+
+        await supabase.from('users').upsert({
+            provider_id: robloxUser.sub,
+            provider: 'roblox',
+            email: robloxUser.email || null,
+            username: username,
+            avatar_url: robloxUser.picture || null
+        }, { onConflict: 'provider_id' });
+
+        res.redirect(`/?login=success&user=${encodeURIComponent(username)}`);
     } catch (error) {
         console.error('Roblox OAuth Hatası:', error.response?.data || error.message);
-        res.status(500).send('Roblox ile giriş yapılırken bir hata oluştu.');
+        res.status(500).send('Roblox ile giriş hatası.');
     }
 });
 
@@ -111,35 +132,44 @@ app.get('/auth/discord/callback', async (req, res) => {
     if (!code) return res.status(400).send('Yetkilendirme kodu alınamadı.');
 
     try {
-        const params = new URLSearchParams();
-        params.append('client_id', config.discord.clientId);
-        params.append('client_secret', config.discord.clientSecret);
-        params.append('grant_type', 'authorization_code');
-        params.append('code', code);
-        params.append('redirect_uri', config.discord.callbackUrl);
+        const params = new URLSearchParams({
+            client_id: config.discord.clientId,
+            client_secret: config.discord.clientSecret,
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: config.discord.callbackUrl
+        });
 
         const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', params, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
 
-        const { access_token } = tokenResponse.data;
-
         const userResponse = await axios.get('https://discord.com/api/users/@me', {
-            headers: { Authorization: `Bearer ${access_token}` }
+            headers: { Authorization: `Bearer ${tokenResponse.data.access_token}` }
         });
 
         const discordUser = userResponse.data;
-        res.send(`Hoş geldin ${discordUser.username}! (${discordUser.email || 'E-posta bulunamadı'}) Discord ile giriş başarılı.`);
+        const avatarUrl = discordUser.avatar 
+            ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png` 
+            : null;
+
+        await supabase.from('users').upsert({
+            provider_id: discordUser.id,
+            provider: 'discord',
+            email: discordUser.email || null,
+            username: discordUser.username,
+            avatar_url: avatarUrl
+        }, { onConflict: 'provider_id' });
+
+        res.redirect(`/?login=success&user=${encodeURIComponent(discordUser.username)}`);
     } catch (error) {
         console.error('Discord OAuth Hatası:', error.response?.data || error.message);
-        res.status(500).send('Discord ile giriş yapılırken bir hata oluştu.');
+        res.status(500).send('Discord ile giriş hatası.');
     }
 });
 
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => {
-        console.log(`Buxify sunucusu http://localhost:${PORT} üzerinde aktif!`);
-    });
+    app.listen(PORT, () => console.log(`Sunucu http://localhost:${PORT} üzerinde aktif!`));
 }
 
 module.exports = app;
