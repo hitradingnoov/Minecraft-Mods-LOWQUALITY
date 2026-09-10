@@ -19,7 +19,81 @@
             overflow: hidden;
         }
 
-        /* Ana İçerik */
+        /* ADMIN LOCK SCREEN (GİRİŞ EKRANI) */
+        #admin-lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #08090d;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .lock-card {
+            background-color: #0f1118;
+            border: 1px solid #1a1e2b;
+            border-radius: 16px;
+            padding: 40px;
+            width: 360px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .lock-logo {
+            width: 140px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .lock-card h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .lock-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .lock-input {
+            background-color: #131621;
+            border: 1px solid #1e2333;
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .lock-input:focus {
+            border-color: #8b5cf6;
+        }
+        .lock-btn {
+            background-color: #8b5cf6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .lock-btn:hover {
+            background-color: #7c3aed;
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* MAIN WEBSITE CONTENT */
         .main-container {
             flex: 1;
             display: flex;
@@ -27,7 +101,6 @@
             overflow-y: auto;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -92,7 +165,7 @@
         }
         .btn-login:hover { background-color: #7c3aed; }
 
-        /* Top Items Bar */
+        /* Top Item Bar */
         .items-bar {
             background-color: #0c0e14;
             padding: 8px 20px;
@@ -269,6 +342,21 @@
 </head>
 <body>
 
+    <!-- ADMIN SIGN IN LOCK EKRANI -->
+    <div id="admin-lock-screen">
+        <div class="lock-card">
+            <!-- Hizliresim üzerindeki görsel -->
+            <img src="https://hizliresim.com/skg8wxux" alt="BloxGame Logo" class="lock-logo" onerror="this.src='https://i.hizliresim.com/skg8wxux.png'">
+            <h2>Admin Sign In</h2>
+            <form id="admin-form" class="lock-input-group">
+                <input type="password" id="admin-pass" class="lock-input" placeholder="Enter Password" required autofocus>
+                <button type="submit" class="lock-btn">Sign In</button>
+            </form>
+            <div id="error-text" class="error-msg">Incorrect password!</div>
+        </div>
+    </div>
+
+    <!-- ANA SİTE İÇERİĞİ -->
     <div class="main-container">
         <header>
             <div class="header-left">
@@ -368,6 +456,29 @@
     </aside>
 
     <script>
+        // Admin Giriş Mantığı
+        const lockScreen = document.getElementById('admin-lock-screen');
+        const adminForm = document.getElementById('admin-form');
+        const adminPass = document.getElementById('admin-pass');
+        const errorText = document.getElementById('error-text');
+
+        // Oturum açılmış mı kontrol et
+        if (sessionStorage.getItem('admin_authenticated') === 'true') {
+            lockScreen.style.display = 'none';
+        }
+
+        adminForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (adminPass.value === 'epstein123') {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                lockScreen.style.display = 'none';
+            } else {
+                errorText.style.display = 'block';
+                adminPass.value = '';
+            }
+        });
+
+        // Çerezden Kullanıcı Adı Alma Mantığı
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
