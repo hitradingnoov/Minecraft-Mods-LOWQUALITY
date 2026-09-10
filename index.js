@@ -78,4 +78,12 @@ app.post('/api/verify-bio', async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Sunucu ${PORT} portunda aktif.`);
+    // Vercel Serverless Uyumlu Dışa Aktarım
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => {
+        console.log('Lokal sunucu 3000 portunda çalışıyor...');
+    });
+}
 });
