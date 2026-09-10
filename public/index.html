@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RBXVALK</title>
+    <title>BloxGame</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
         }
         body {
-            background-color: #0d0e12;
+            background-color: #08090d;
             color: #ffffff;
             display: flex;
             height: 100vh;
@@ -32,202 +32,207 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background-color: #111319;
-            border-bottom: 1px solid #1a1d26;
+            padding: 12px 24px;
+            background-color: #0f1118;
+            border-bottom: 1px solid #1a1e2b;
         }
         .header-left {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
         .logo {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 900;
             color: #ffffff;
-            font-style: italic;
             letter-spacing: -0.5px;
+            text-decoration: none;
         }
         .logo span { color: #8b5cf6; }
         .nav-links {
             display: flex;
-            gap: 15px;
+            gap: 18px;
             font-size: 13px;
-            color: #8b92a2;
         }
         .nav-links a {
             color: #8b92a2;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-weight: 600;
+            transition: color 0.2s;
         }
         .nav-links a:hover { color: #fff; }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-        .btn-signin {
-            background-color: #1a1d26;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+        .balance-box {
+            background-color: #171a26;
+            border: 1px solid #252a3d;
+            border-radius: 8px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-weight: bold;
             font-size: 13px;
-            cursor: pointer;
+            color: #fbbf24;
         }
-        .btn-signup {
+        .btn-login {
             background-color: #8b5cf6;
             color: #fff;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 6px;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 13px;
             cursor: pointer;
+            text-decoration: none;
         }
+        .btn-login:hover { background-color: #7c3aed; }
 
         /* Top Items Bar */
         .items-bar {
-            background-color: #111319;
-            padding: 10px 20px;
+            background-color: #0c0e14;
+            padding: 8px 20px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
-            border-bottom: 1px solid #1a1d26;
+            border-bottom: 1px solid #1a1e2b;
         }
         .item-card {
-            background-color: #171a23;
-            border: 1px solid #222634;
-            border-radius: 8px;
-            padding: 8px 12px;
-            min-width: 90px;
+            background-color: #131621;
+            border: 1px solid #1e2333;
+            border-radius: 6px;
+            padding: 6px 12px;
+            min-width: 100px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
         }
-        .item-info { display: flex; flex-direction: column; font-size: 11px; }
-        .item-name { color: #8b92a2; }
-        .item-price { color: #fff; font-weight: bold; }
+        .item-name { color: #8b92a2; font-size: 11px; }
+        .item-price { color: #fbbf24; font-size: 11px; font-weight: bold; }
 
         /* Banner Grid */
         .content-area {
-            padding: 20px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 28px;
         }
         .banners-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 16px;
         }
         .banner-card {
             border-radius: 12px;
-            padding: 25px;
-            height: 140px;
+            padding: 22px;
+            height: 135px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        .banner-deposit { background: linear-gradient(135deg, #052e16 0%, #0f5132 100%); border: 1px solid #14532d; }
-        .banner-race { background: linear-gradient(135deg, #2e1065 0%, #581c87 100%); border: 1px solid #6b21a8; }
-        .banner-discord { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border: 1px solid #3730a3; }
+        .banner-deposit { background: linear-gradient(135deg, #06381e 0%, #0a1f14 100%); }
+        .banner-race { background: linear-gradient(135deg, #3b136b 0%, #170a2c 100%); }
+        .banner-discord { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
         
-        .banner-text h2 { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
-        .banner-text p { font-size: 12px; opacity: 0.8; }
+        .banner-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .banner-card p { font-size: 12px; color: #a1a1aa; }
         .banner-btn {
             margin-top: 12px;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
             border: none;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.12);
             color: #fff;
             font-size: 11px;
             font-weight: bold;
+            width: fit-content;
             cursor: pointer;
         }
 
-        /* Originals Games */
+        /* Games Section */
         .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #e4e4e7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .games-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
+            gap: 12px;
         }
         .game-card {
-            background-color: #171a23;
-            border: 1px solid #222634;
+            background-color: #131621;
+            border: 1px solid #1e2333;
             border-radius: 10px;
-            height: 160px;
+            height: 150px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 12px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
         }
-        .game-card:hover { transform: translateY(-4px); }
-        .game-card h3 { font-size: 14px; font-weight: 800; text-transform: uppercase; }
-        .game-card span { font-size: 10px; color: #8b92a2; margin-top: 2px; }
+        .game-card:hover {
+            transform: translateY(-4px);
+            border-color: #8b5cf6;
+        }
+        .game-card h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; }
+        .game-card span { font-size: 10px; color: #71717a; margin-top: 2px; }
 
-        .card-battles { background: linear-gradient(180deg, #1f1a24 0%, #120e17 100%); border-color: #e11d48; }
-        .card-cases { background: linear-gradient(180deg, #062c1b 0%, #0d1a14 100%); border-color: #10b981; }
-        .card-mines { background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%); border-color: #3b82f6; }
-        .card-bj { background: linear-gradient(180deg, #31121d 0%, #11090c 100%); border-color: #f43f5e; }
-        .card-towers { background: linear-gradient(180deg, #3f2305 0%, #120c02 100%); border-color: #f59e0b; }
-        .card-upgrade { background: linear-gradient(180deg, #042f2e 0%, #021515 100%); border-color: #14b8a6; }
-        .card-dice { background: linear-gradient(180deg, #3f0713 0%, #120205 100%); border-color: #fb7185; }
+        .card-battles { background: linear-gradient(180deg, #2a121a 0%, #131621 100%); }
+        .card-cases { background: linear-gradient(180deg, #09281a 0%, #131621 100%); }
+        .card-mines { background: linear-gradient(180deg, #121d3a 0%, #131621 100%); }
+        .card-bj { background: linear-gradient(180deg, #2b1118 0%, #131621 100%); }
+        .card-towers { background: linear-gradient(180deg, #2d1c07 0%, #131621 100%); }
+        .card-upgrade { background: linear-gradient(180deg, #0a2628 0%, #131621 100%); }
+        .card-dice { background: linear-gradient(180deg, #2e0e17 0%, #131621 100%); }
 
         /* Chat Sidebar */
         aside.chat-sidebar {
-            width: 300px;
-            background-color: #111319;
-            border-left: 1px solid #1a1d26;
+            width: 290px;
+            background-color: #0f1118;
+            border-left: 1px solid #1a1e2b;
             display: flex;
             flex-direction: column;
         }
         .chat-top-header {
-            padding: 12px 15px;
-            border-bottom: 1px solid #1a1d26;
+            padding: 14px 16px;
+            border-bottom: 1px solid #1a1e2b;
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
         }
         .rain-pool-box {
-            background-color: #171a23;
-            margin: 10px 15px;
-            padding: 10px;
+            background-color: #131621;
+            margin: 12px 16px;
+            padding: 10px 14px;
             border-radius: 8px;
-            border: 1px solid #222634;
+            border: 1px solid #1e2333;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .rain-amount { font-weight: bold; color: #8b5cf6; font-size: 13px; }
+        .rain-amount { font-weight: 800; color: #8b5cf6; font-size: 13px; }
 
         .chat-messages {
             flex: 1;
-            padding: 10px 15px;
+            padding: 10px 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             font-size: 12px;
         }
         .chat-row {
@@ -236,24 +241,24 @@
             align-items: flex-start;
         }
         .badge {
-            background-color: #222634;
-            color: #8b92a2;
+            background-color: #1e2333;
+            color: #8b5cf6;
             font-size: 10px;
-            padding: 2px 4px;
+            padding: 2px 5px;
             border-radius: 4px;
-            font-weight: bold;
+            font-weight: 800;
         }
-        .chat-uname { font-weight: bold; color: #fff; }
+        .chat-uname { font-weight: 700; color: #e4e4e7; }
         .chat-text { color: #9ca3af; margin-top: 2px; }
 
         .chat-footer {
-            padding: 12px;
-            border-top: 1px solid #1a1d26;
+            padding: 12px 16px;
+            border-top: 1px solid #1a1e2b;
         }
         .chat-footer input {
             width: 100%;
-            background-color: #171a23;
-            border: 1px solid #222634;
+            background-color: #131621;
+            border: 1px solid #1e2333;
             padding: 10px;
             border-radius: 6px;
             color: #fff;
@@ -267,64 +272,62 @@
     <div class="main-container">
         <header>
             <div class="header-left">
-                <a href="/" class="logo">RBX<span>VALK</span></a>
+                <a href="/" class="logo">BLOX<span>GAME</span></a>
                 <div class="nav-links">
-                    <a href="#">🤝 Affiliate</a>
-                    <a href="#">🎁 Rewards</a>
-                    <a href="#">🏆 Leaderboard</a>
+                    <a href="#">Affiliates</a>
+                    <a href="#">Rewards</a>
+                    <a href="#">Leaderboard</a>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn-signin">Sign In</button>
-                <button class="btn-signup">Sign Up</button>
+                <div class="balance-box">
+                    <span>💎</span>
+                    <span id="user-balance">1,250</span> RBX
+                </div>
+                <a href="/auth/roblox" class="btn-login" id="login-button">Log In</a>
             </div>
         </header>
 
-        <!-- Top Item Ticker -->
+        <!-- Top Item Bar -->
         <div class="items-bar">
-            <div class="item-card"><div class="item-info"><span class="item-name">Mug</span><span class="item-price">💎 1</span></div></div>
-            <div class="item-card"><div class="item-info"><span class="item-name">Cat Ears</span><span class="item-price">💎 7</span></div></div>
-            <div class="item-card"><div class="item-info"><span class="item-name">Red 8-Bit</span><span class="item-price">💎 2,470</span></div></div>
-            <div class="item-card"><div class="item-info"><span class="item-name">Larp</span><span class="item-price">💎 3</span></div></div>
-            <div class="item-card"><div class="item-info"><span class="item-name">Err</span><span class="item-price">💎 5</span></div></div>
+            <div class="item-card"><span class="item-name">Valkyrie</span><span class="item-price">💎 50,000</span></div>
+            <div class="item-card"><span class="item-name">Dominus</span><span class="item-price">💎 120,000</span></div>
+            <div class="item-card"><span class="item-name">Red Crown</span><span class="item-price">💎 12,500</span></div>
+            <div class="item-card"><span class="item-name">Fedora</span><span class="item-price">💎 3,200</span></div>
+            <div class="item-card"><span class="item-name">Katana</span><span class="item-price">💎 850</span></div>
         </div>
 
         <div class="content-area">
-            <!-- 3'lü Promosyon Kartları -->
+            <!-- 3 Promosyon Kartı -->
             <div class="banners-grid">
                 <div class="banner-card banner-deposit">
-                    <div class="banner-text">
-                        <h2>DEPOSIT BONUS</h2>
-                        <p>Claim your daily deposit rewards</p>
-                        <button class="banner-btn">Claim now!</button>
-                    </div>
+                    <h2>20% DEPOSIT BONUS</h2>
+                    <p>Use code BLOX2026 on your next deposit</p>
+                    <button class="banner-btn">Claim Now</button>
                 </div>
                 <div class="banner-card banner-race">
-                    <div class="banner-text">
-                        <h2>WEEKLY RACE</h2>
-                        <p>Wager to win big pools</p>
-                        <button class="banner-btn">Wager to win!</button>
-                    </div>
+                    <h2>$5,000 DAILY RACE</h2>
+                    <p>Wager on games to climb the board</p>
+                    <button class="banner-btn">View Race</button>
                 </div>
                 <div class="banner-card banner-discord">
-                    <div class="banner-text">
-                        <h2>JOIN OUR DISCORD</h2>
-                        <p>discord.gg/rbxvalk</p>
-                    </div>
+                    <h2>COMMUNITY DISCORD</h2>
+                    <p>Join for giveaways and chat</p>
+                    <button class="banner-btn">Join Server</button>
                 </div>
             </div>
 
-            <!-- RBXVALK Originals Oyunları -->
+            <!-- Game Cards -->
             <div>
-                <div class="section-title">RBXVALK Originals</div>
+                <div class="section-title">BloxGame Originals</div>
                 <div class="games-grid">
-                    <div class="game-card card-battles"><h3>BATTLES</h3><span>RBXVALK ORIGINALS</span></div>
-                    <div class="game-card card-cases"><h3>CASES</h3><span>RBXVALK ORIGINALS</span></div>
-                    <div class="game-card card-mines"><h3>MINES</h3><span>RBXVALK ORIGINALS</span></div>
-                    <div class="game-card card-bj"><h3>BJ</h3><span>RBXVALK ORIGINALS</span></div>
-                    <div class="game-card card-towers"><h3>TOWERS</h3><span>RBXVALK ORIGINALS</span></div>
-                    <div class="game-card card-upgrade"><h3>UPGRADE</h3><span>RBXVALK ORIGINALS</span></div>
-                    <div class="game-card card-dice"><h3>DICE</h3><span>RBXVALK ORIGINALS</span></div>
+                    <div class="game-card card-battles"><h3>BATTLES</h3><span>PVP CASES</span></div>
+                    <div class="game-card card-cases"><h3>CASES</h3><span>UNBOXING</span></div>
+                    <div class="game-card card-mines"><h3>MINES</h3><span>MULTIPLIER</span></div>
+                    <div class="game-card card-bj"><h3>BLACKJACK</h3><span>CARDS</span></div>
+                    <div class="game-card card-towers"><h3>TOWERS</h3><span>CLIMB</span></div>
+                    <div class="game-card card-upgrade"><h3>UPGRADE</h3><span>RISK & WIN</span></div>
+                    <div class="game-card card-dice"><h3>DICE</h3><span>CLASSIC</span></div>
                 </div>
             </div>
         </div>
@@ -333,43 +336,53 @@
     <!-- Sağ Chat -->
     <aside class="chat-sidebar">
         <div class="chat-top-header">
-            <span>ENGLISH CHAT</span>
-            <span style="color: #10b981;">🟢 10</span>
+            <span>GLOBAL CHAT</span>
+            <span style="color: #10b981;">🟢 84 ONLINE</span>
         </div>
         <div class="rain-pool-box">
             <div>
-                <div style="font-size: 10px; color: #8b92a2;">Rain Pool</div>
-                <div style="font-size: 10px; opacity: 0.6;">⏱️ 34:11</div>
+                <div style="font-size: 10px; color: #8b92a2;">Active Rain</div>
+                <div style="font-size: 10px; opacity: 0.6;">⏱️ 12:45</div>
             </div>
-            <div class="rain-amount">💎 2,500.00 +</div>
+            <div class="rain-amount">💎 1,800 RBX</div>
         </div>
-        <div class="chat-messages">
+        <div class="chat-messages" id="chat-messages">
             <div class="chat-row">
-                <span class="badge">1</span>
+                <span class="badge">LVL 12</span>
                 <div>
-                    <span class="chat-uname">Xzenon:</span>
-                    <div class="chat-text">Who can give me 50</div>
+                    <span class="chat-uname">trout7126:</span>
+                    <div class="chat-text">gg nice multiplier on mines</div>
                 </div>
             </div>
             <div class="chat-row">
-                <span class="badge">1</span>
+                <span class="badge">LVL 4</span>
                 <div>
-                    <span class="chat-uname">MAIZE1E:</span>
-                    <div class="chat-text">bruh i cant OPEN Free case</div>
-                </div>
-            </div>
-            <div class="chat-row">
-                <span class="badge">18</span>
-                <div>
-                    <span class="chat-uname">zaydaslo:</span>
-                    <div class="chat-text">u need to deposit 10 dollars</div>
+                    <span class="chat-uname">arabella:</span>
+                    <div class="chat-text">who is playing case battles?</div>
                 </div>
             </div>
         </div>
         <div class="chat-footer">
-            <input type="text" placeholder="Sign in to chat...">
+            <input type="text" id="chat-input" placeholder="Type a message...">
         </div>
     </aside>
 
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        const cookieValue = getCookie('buxify_user');
+        if (cookieValue) {
+            const username = decodeURIComponent(cookieValue);
+            const loginBtn = document.getElementById('login-button');
+            if (loginBtn) {
+                loginBtn.textContent = username;
+                loginBtn.href = "#";
+            }
+        }
+    </script>
 </body>
 </html>
