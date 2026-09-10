@@ -56,7 +56,8 @@ app.get('/auth/google/callback', async (req, res) => {
             avatar_url: googleUser.picture
         }, { onConflict: 'provider_id' });
 
-        res.cookie('buxify_user', encodeURIComponent(googleUser.name), { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: false });
+        // Kesin çözüm: Doğrudan Header ile Cookie set etme
+        res.setHeader('Set-Cookie', `buxify_user=${encodeURIComponent(googleUser.name)}; Path=/; Max-Age=604800; SameSite=Lax`);
         res.redirect('/');
     } catch (error) {
         console.error('Google OAuth Hatası:', error.response?.data || error.message);
@@ -109,7 +110,7 @@ app.get('/auth/roblox/callback', async (req, res) => {
             avatar_url: robloxUser.picture || null
         }, { onConflict: 'provider_id' });
 
-        res.cookie('buxify_user', encodeURIComponent(username), { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: false });
+        res.setHeader('Set-Cookie', `buxify_user=${encodeURIComponent(username)}; Path=/; Max-Age=604800; SameSite=Lax`);
         res.redirect('/');
     } catch (error) {
         console.error('Roblox OAuth Hatası:', error.response?.data || error.message);
@@ -162,7 +163,7 @@ app.get('/auth/discord/callback', async (req, res) => {
             avatar_url: avatarUrl
         }, { onConflict: 'provider_id' });
 
-        res.cookie('buxify_user', encodeURIComponent(discordUser.username), { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: false });
+        res.setHeader('Set-Cookie', `buxify_user=${encodeURIComponent(discordUser.username)}; Path=/; Max-Age=604800; SameSite=Lax`);
         res.redirect('/');
     } catch (error) {
         console.error('Discord OAuth Hatası:', error.response?.data || error.message);
