@@ -297,7 +297,7 @@
     <!-- ADMIN SIGN IN LOCK EKRANI -->
     <div id="admin-lock-screen">
         <div class="lock-card">
-            <img src="https://hizliresim.com/skg8wxux" alt="BloxGame Logo" class="lock-logo" onerror="this.src='https://i.hizliresim.com/skg8wxux.png'">
+            <img src="https://hizliresim.com/skg8wxux" alt="BloxGame Logo" class="lock-logo" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png'">
             <h2>Admin Sign In</h2>
             <form id="admin-form" class="lock-input-group">
                 <input type="password" id="admin-pass" class="lock-input" placeholder="Enter Password" required autofocus>
@@ -313,13 +313,11 @@
             <span class="close-modal" id="close-modal-btn">&times;</span>
             <div class="modal-title">Roblox Verification</div>
             
-            <!-- 1. Aşama: Kullanıcı Adı Girişi -->
             <div id="step-1" class="lock-input-group">
                 <input type="text" id="roblox-username-input" class="lock-input" placeholder="Roblox Username">
                 <button id="btn-get-code" class="lock-btn">Get Verification Code</button>
             </div>
 
-            <!-- 2. Aşama: Kod Yapıştırma & Doğrulama -->
             <div id="step-2" style="display: none;">
                 <p class="modal-desc">Copy the code below and paste it into your Roblox profile description (About):</p>
                 <div class="code-box" id="generated-code">BLOX-0000</div>
@@ -477,7 +475,6 @@
             loginModal.style.display = 'none';
         });
 
-        // 1. Aşama: Kod Üretme İsteği
         btnGetCode.addEventListener('click', async () => {
             const username = document.getElementById('roblox-username-input').value.trim();
             if (!username) {
@@ -508,7 +505,6 @@
             }
         });
 
-        // 2. Aşama: Profil Bio Kontrolü
         btnVerifyBio.addEventListener('click', async () => {
             try {
                 const res = await fetch('/api/verify-bio', {
@@ -534,7 +530,7 @@
             modalError.style.display = 'block';
         }
 
-        // Cookie Okuma ve Kullanıcı Oturumunu Arayüze Yansıtma
+        // Cookie Okuma
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
