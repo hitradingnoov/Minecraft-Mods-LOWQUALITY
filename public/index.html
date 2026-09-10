@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buxify</title>
+    <title>BloxGame</title>
     <style>
         * {
             margin: 0;
@@ -26,17 +26,45 @@
             border-right: 1px solid #1a1d26;
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            gap: 15px;
+            padding: 15px 10px;
+            gap: 6px;
+            overflow-y: auto;
         }
-        .sidebar-item-box {
-            background-color: #171a23;
-            border: 1px solid #262c3d;
-            border-radius: 8px;
-            padding: 15px;
-            color: #8b92a2;
-            font-size: 14px;
+        .logo {
+            font-size: 18px;
             font-weight: bold;
+            color: #fbbf24;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sidebar-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #5d6578;
+            padding: 8px 10px 4px;
+            font-weight: 700;
+        }
+        .nav-item {
+            color: #8b92a2;
+            text-decoration: none;
+            padding: 9px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: #171a23;
+            color: #ffffff;
+        }
+        .nav-item.active {
+            color: #fbbf24;
         }
 
         /* Main Wrapper */
@@ -48,12 +76,12 @@
             background-color: #0f1015;
         }
 
-        /* Üst Kısım (Header / Balans / Kullanıcı) */
+        /* Header */
         header {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 15px 30px;
+            padding: 12px 25px;
             background-color: #12141c;
             border-bottom: 1px solid #1a1d26;
             gap: 15px;
@@ -62,26 +90,49 @@
             background-color: #171a23;
             border: 1px solid #262c3d;
             border-radius: 8px;
-            padding: 8px 15px;
+            padding: 6px 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             color: #fbbf24;
         }
+        .deposit-btn {
+            background-color: #fbbf24;
+            color: #0f1015;
+            border: none;
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-profile {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
         .user-avatar {
-            width: 38px;
-            height: 38px;
-            background-color: #171a23;
-            border: 1px solid #262c3d;
+            width: 34px;
+            height: 34px;
+            background-color: #262c3d;
+            border: 1px solid #fbbf24;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #fbbf24;
             font-weight: bold;
+        }
+        .user-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
         }
         .login-btn {
             background-color: #fbbf24;
@@ -92,13 +143,10 @@
             font-weight: 700;
             font-size: 13px;
         }
-        .login-btn:hover {
-            background-color: #f59e0b;
-        }
 
-        /* İçerik Grid Alanı (Çizimine birebir uyumlu) */
+        /* Content Grid */
         .content-grid {
-            padding: 25px;
+            padding: 20px;
             display: grid;
             grid-template-columns: 1.3fr 1fr;
             gap: 20px;
@@ -117,23 +165,19 @@
             background-color: #151821;
             border: 1px solid #1f2330;
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
         }
 
-        .login-card {
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 15px;
-        }
+        /* Login Card */
         .login-card h3 {
             font-size: 18px;
-            color: #fbbf24;
+            color: #ffffff;
+            margin-bottom: 8px;
         }
         .auth-buttons {
             display: flex;
             gap: 10px;
+            margin-top: 15px;
         }
         .auth-btn {
             padding: 8px 16px;
@@ -142,158 +186,321 @@
             text-decoration: none;
             font-size: 13px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .btn-discord { background-color: #5865F2; }
         .btn-google { background-color: #db4437; }
         .btn-roblox { background-color: #222; border: 1px solid #444; }
 
-        .affiliates-card {
-            min-height: 140px;
+        /* Affiliates Card */
+        .affiliates-card h3 {
+            color: #fbbf24;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .aff-info {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
+            background-color: #10121a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 12px;
         }
 
-        .race-card {
-            min-height: 140px;
+        /* Race Card */
+        .race-card h3 {
+            color: #fbbf24;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        .race-timer {
+            font-size: 12px;
+            color: #8b92a2;
+            margin-bottom: 12px;
+        }
+        .leaderboard-mini {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
         }
-
-        .news-card {
-            min-height: 320px;
+        .lb-row {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background-color: #10121a;
+            border-radius: 6px;
         }
 
-        /* Sağ Chat Alanı */
+        /* News Card */
+        .news-card h3 {
+            color: #fbbf24;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .news-item {
+            border-bottom: 1px solid #1f2330;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-item h4 {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .news-item p {
+            font-size: 12px;
+            color: #8b92a2;
+            line-height: 1.4;
+        }
+
+        /* Chat Sidebar */
         aside.chat-sidebar {
             width: 280px;
             background-color: #12141c;
             border-left: 1px solid #1a1d26;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 15px;
         }
         .chat-header {
             font-size: 14px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border-bottom: 1px solid #1a1d26;
             padding-bottom: 10px;
-            color: #8b92a2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .online-count {
+            font-size: 11px;
+            color: #10b981;
+            font-weight: normal;
         }
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            font-size: 13px;
+            font-size: 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            color: #b0b5c1;
+            padding-right: 4px;
+        }
+        .chat-msg {
+            background-color: #171a23;
+            padding: 8px 10px;
+            border-radius: 6px;
+            word-break: break-word;
+        }
+        .chat-msg .user {
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 2px;
+        }
+        .chat-msg .text {
+            color: #d1d5db;
         }
         .chat-input-box {
-            margin-top: 15px;
+            margin-top: 12px;
             background-color: #171a23;
             border: 1px solid #262c3d;
             border-radius: 8px;
-            height: 40px;
             display: flex;
-            align-items: center;
-            padding: 0 10px;
+            overflow: hidden;
+        }
+        .chat-input-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+        }
+        .chat-input-box button {
+            background-color: #fbbf24;
+            border: none;
+            padding: 0 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0b0c10;
         }
     </style>
 </head>
 <body>
 
-    <!-- Çizimdeki Sol Sidebar (games / go / here) -->
+    <!-- Sol Menü -->
     <aside class="sidebar">
-        <div style="font-size: 18px; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">BLOXGAME</div>
-        <div class="sidebar-item-box">games</div>
-        <div class="sidebar-item-box">go</div>
-        <div class="sidebar-item-box">here</div>
+        <a href="/" class="logo">⚡ BLOXGAME</a>
+        
+        <div class="sidebar-title">Games</div>
+        <a href="#" class="nav-item active">🎲 Casino</a>
+        <a href="#" class="nav-item">🎰 Slots</a>
+        <a href="#" class="nav-item">🃏 Blackjack</a>
+        <a href="#" class="nav-item">🎯 Roulette</a>
+        <a href="#" class="nav-item">🚀 Crash</a>
+        <a href="#" class="nav-item">🎁 Mystery Box</a>
+
+        <div class="sidebar-title">Community</div>
+        <a href="#" class="nav-item">🏆 Leaderboard</a>
+        <a href="#" class="nav-item">⚔️ Bounties</a>
+        <a href="#" class="nav-item">🎧 Support</a>
+        <a href="#" class="nav-item">💬 Discord</a>
     </aside>
 
-    <!-- Orta ve Üst Alan -->
+    <!-- Ana İçerik -->
     <div class="main-wrapper">
         <header>
             <div class="balance-box">
                 <span>💎</span>
-                <span>rbx</span>
+                <span id="user-balance">1,250</span> RBX
+                <button class="deposit-btn">+</button>
             </div>
-            <div class="user-avatar">👤</div>
-            <a href="#" class="login-btn">Log in</a>
+            
+            <div class="user-profile" id="user-profile">
+                <div class="user-avatar" id="avatar-icon">U</div>
+                <span class="user-name" id="profile-name">User</span>
+            </div>
+
+            <a href="#" class="login-btn" id="login-button">Log in</a>
         </header>
 
-        <!-- Çizimindeki Grid Yerleşimi -->
         <div class="content-grid">
             <div class="left-stack">
-                <!-- log in here kutusu -->
+                <!-- Log in / Welcome Card -->
                 <div class="card-box login-card">
-                    <h3>log in here</h3>
-                    <p style="color: #8b92a2; font-size: 13px;">Choose your provider to log in securely:</p>
-                    <div class="auth-buttons">
+                    <h3>Bet, win, and cash out <span>your way.</span></h3>
+                    <p style="color: #8b92a2; font-size: 13px;">Deposit instantly with crypto, cards or gift cards.</p>
+                    <div class="auth-buttons" id="auth-buttons-wrapper">
                         <a href="/auth/discord" class="auth-btn btn-discord">Discord</a>
                         <a href="/auth/google" class="auth-btn btn-google">Google</a>
                         <a href="/auth/roblox" class="auth-btn btn-roblox">Roblox</a>
                     </div>
                 </div>
 
-                <!-- affiliates here kutusu -->
+                <!-- Affiliates Card -->
                 <div class="card-box affiliates-card">
-                    <h3 style="color: #fbbf24; font-size: 16px; margin-bottom: 5px;">affiliates here</h3>
-                    <p style="color: #8b92a2; font-size: 13px;">Invite friends and earn rewards instantly.</p>
+                    <h3>Affiliate Program</h3>
+                    <p style="color: #8b92a2; font-size: 12px;">Share your link and earn 5% of all bets placed by your referrals.</p>
+                    <div class="aff-info">
+                        <span>Your Ref Code: <strong style="color: #fff;">BLOX2026</strong></span>
+                        <span>Earned: <strong style="color: #fbbf24;">45.00 RBX</strong></span>
+                    </div>
                 </div>
 
-                <!-- RACE HERE kutusu -->
+                <!-- Race Card -->
                 <div class="card-box race-card">
-                    <h3 style="color: #fbbf24; font-size: 16px; margin-bottom: 5px;">RACE HERE</h3>
-                    <p style="color: #8b92a2; font-size: 13px;">The active wagering race pool details.</p>
+                    <h3>Daily 2.5M Wagering Race</h3>
+                    <div class="race-timer">Ends in: 18h 42m 10s</div>
+                    <div class="leaderboard-mini">
+                        <div class="lb-row">
+                            <span>#1 trout7126</span>
+                            <span style="color: #fbbf24;">70,796 RBX</span>
+                        </div>
+                        <div class="lb-row">
+                            <span>#2 arabella01</span>
+                            <span style="color: #fbbf24;">60,700 RBX</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- NEWS HERE kutusu (Sağ taraf) -->
+            <!-- News Card -->
             <div class="card-box news-card">
-                <h3 style="color: #fbbf24; font-size: 18px; margin-bottom: 10px;">NEWS HERE</h3>
-                <p style="color: #8b92a2; font-size: 14px; line-height: 1.5;">Latest platform announcements, game updates, and community highlights will appear in this section.</p>
+                <h3>Latest Platform News</h3>
+                <div class="news-item">
+                    <h4>🚀 New Game Mode: Crash 2.0</h4>
+                    <p>Enhanced multipliers and lower house edge are now live on Crash!</p>
+                </div>
+                <div class="news-item">
+                    <h4>🎁 Instant Robux Cashouts</h4>
+                    <p>Withdrawals under 10,000 RBX are now processed instantly to your account.</p>
+                </div>
+                <div class="news-item">
+                    <h4>🛡️ Provably Fair Update</h4>
+                    <p>Verification seeds have been updated for increased transparency.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Çizimdeki Sağ CHAT Paneli -->
+    <!-- Sağ Chat Paneli -->
     <aside class="chat-sidebar">
-        <div class="chat-header">CHAT</div>
-        <div class="chat-messages">
-            <div><strong>User1:</strong> Hey everyone!</div>
-            <div><strong>User2:</strong> Nice win on crash</div>
-            <div><strong>User3:</strong> Let's gooo</div>
+        <div class="chat-header">
+            <span>Global Chat</span>
+            <span class="online-count">🟢 72 online</span>
         </div>
-        <div class="chat-input-box"></div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-msg">
+                <div class="user">trout7126</div>
+                <div class="text">gg nice multiplier on crash</div>
+            </div>
+            <div class="chat-msg">
+                <div class="user">arabella01</div>
+                <div class="text">let's gooo big win!</div>
+            </div>
+            <div class="chat-msg">
+                <div class="user">denis</div>
+                <div class="text">anyone playing roulette now?</div>
+            </div>
+        </div>
+        <form class="chat-input-box" id="chat-form">
+            <input type="text" id="chat-input" placeholder="Type a message..." required>
+            <button type="submit">➤</button>
+        </form>
     </aside>
 
     <script>
+        // Cookie okuma
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
+        // Kullanıcı giriş yaptıysa UI güncelleme
         const cookieValue = getCookie('buxify_user');
         if (cookieValue) {
             const username = decodeURIComponent(cookieValue);
-            const loginBtn = document.querySelector('.login-btn');
-            const avatarBox = document.querySelector('.user-avatar');
             
-            if (loginBtn) {
-                loginBtn.style.display = 'none';
-            }
-            if (avatarBox) {
-                avatarBox.innerHTML = username.charAt(0).toUpperCase();
-                avatarBox.title = username;
-            }
+            const loginBtn = document.getElementById('login-button');
+            const userProfile = document.getElementById('user-profile');
+            const profileName = document.getElementById('profile-name');
+            const avatarIcon = document.getElementById('avatar-icon');
+
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (userProfile) userProfile.style.display = 'flex';
+            if (profileName) profileName.textContent = username;
+            if (avatarIcon) avatarIcon.textContent = username.charAt(0).toUpperCase();
         }
+
+        // Canlı Chat Gönderimi
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msgText = chatInput.value.trim();
+            if(!msgText) return;
+
+            const currentUser = cookieValue ? decodeURIComponent(cookieValue) : 'GuestUser';
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-msg';
+            msgDiv.innerHTML = `<div class="user">${currentUser}</div><div class="text">${msgText}</div>`;
+
+            chatMessages.appendChild(msgDiv);
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
     </script>
 </body>
 </html>
