@@ -12,7 +12,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: #0b0c10;
+            background: hsla(285, 33%, 2%, 1);
+            background: linear-gradient(90deg, hsla(285, 33%, 2%, 1) 0%, hsla(289, 55%, 20%, 1) 22%, hsla(290, 44%, 19%, 1) 64%, hsla(272, 53%, 30%, 1) 81%, hsla(266, 56%, 37%, 1) 90%, hsla(263, 58%, 45%, 1) 100%);
             color: #ffffff;
             display: flex;
             height: 100vh;
@@ -22,8 +23,9 @@
         /* Sol Sidebar */
         aside.sidebar {
             width: 240px;
-            background-color: #12141c;
-            border-right: 1px solid #1e2230;
+            background-color: rgba(18, 20, 28, 0.85);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             padding: 20px;
@@ -43,7 +45,7 @@
         .sidebar-section-title {
             font-size: 11px;
             text-transform: uppercase;
-            color: #4b5563;
+            color: #71717a;
             margin-top: 15px;
             margin-bottom: 5px;
             letter-spacing: 0.5px;
@@ -60,7 +62,7 @@
             gap: 10px;
         }
         .nav-item:hover, .nav-item.active {
-            background-color: #1a1d29;
+            background-color: rgba(255, 255, 255, 0.08);
             color: #ffffff;
         }
         .nav-item.active {
@@ -74,15 +76,16 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            background-color: #0f1016;
+            background: transparent;
         }
         header {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             padding: 15px 35px;
-            background-color: #12141c;
-            border-bottom: 1px solid #1e2230;
+            background-color: rgba(18, 20, 28, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             gap: 20px;
         }
         .login-btn {
@@ -112,8 +115,9 @@
 
         /* Hero Banner */
         .hero-banner {
-            background: linear-gradient(135deg, #181b28 0%, #12141c 100%);
-            border: 1px solid #1e2230;
+            background: rgba(18, 20, 28, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 45px;
             display: flex;
@@ -121,7 +125,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
         .hero-text {
             max-width: 550px;
@@ -183,8 +187,8 @@
             gap: 15px;
         }
         .mini-game-card {
-            background: linear-gradient(145deg, #1e2230, #141722);
-            border: 1px solid #2a2f42;
+            background: rgba(30, 34, 48, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             height: 140px;
             display: flex;
@@ -192,8 +196,8 @@
             justify-content: center;
             font-weight: bold;
             color: #fbbf24;
-            font-size: 18px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             transition: transform 0.2s;
         }
         .mini-game-card:hover {
@@ -203,8 +207,9 @@
 
         /* Race Banner */
         .race-banner {
-            background-color: #12141c;
-            border: 1px solid #1e2230;
+            background-color: rgba(18, 20, 28, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 20px 30px;
             text-align: center;
@@ -219,8 +224,9 @@
         /* Sağ Chat Sidebar */
         aside.chat-sidebar {
             width: 300px;
-            background-color: #12141c;
-            border-left: 1px solid #1e2230;
+            background-color: rgba(18, 20, 28, 0.85);
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             padding: 20px;
@@ -229,7 +235,7 @@
             font-size: 15px;
             font-weight: bold;
             margin-bottom: 15px;
-            border-bottom: 1px solid #1e2230;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             padding-bottom: 12px;
             display: flex;
             justify-content: space-between;
@@ -253,7 +259,7 @@
             padding-right: 5px;
         }
         .chat-msg {
-            background-color: #181b26;
+            background-color: rgba(24, 27, 38, 0.7);
             padding: 8px 12px;
             border-radius: 8px;
             border-left: 3px solid #fbbf24;
@@ -270,8 +276,8 @@
         .chat-input-box {
             margin-top: 15px;
             display: flex;
-            background-color: #181b26;
-            border: 1px solid #2a2f42;
+            background-color: rgba(24, 27, 38, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
             overflow: hidden;
         }
