@@ -7,7 +7,6 @@ const config = require('./config');
 const app = express();
 const PORT = config.PORT;
 
-// Supabase İstemcisi
 const supabase = createClient(config.supabase.url, config.supabase.anonKey);
 
 app.use(express.json());
@@ -57,7 +56,8 @@ app.get('/auth/google/callback', async (req, res) => {
             avatar_url: googleUser.picture
         }, { onConflict: 'provider_id' });
 
-        res.redirect(`/?login=success&user=${encodeURIComponent(googleUser.name)}`);
+        res.cookie('buxify_user', encodeURIComponent(googleUser.name), { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: false });
+        res.redirect('/');
     } catch (error) {
         console.error('Google OAuth Hatası:', error.response?.data || error.message);
         res.status(500).send('Google ile giriş hatası.');
@@ -109,7 +109,8 @@ app.get('/auth/roblox/callback', async (req, res) => {
             avatar_url: robloxUser.picture || null
         }, { onConflict: 'provider_id' });
 
-        res.redirect(`/?login=success&user=${encodeURIComponent(username)}`);
+        res.cookie('buxify_user', encodeURIComponent(username), { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: false });
+        res.redirect('/');
     } catch (error) {
         console.error('Roblox OAuth Hatası:', error.response?.data || error.message);
         res.status(500).send('Roblox ile giriş hatası.');
@@ -161,7 +162,8 @@ app.get('/auth/discord/callback', async (req, res) => {
             avatar_url: avatarUrl
         }, { onConflict: 'provider_id' });
 
-        res.redirect(`/?login=success&user=${encodeURIComponent(discordUser.username)}`);
+        res.cookie('buxify_user', encodeURIComponent(discordUser.username), { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: false });
+        res.redirect('/');
     } catch (error) {
         console.error('Discord OAuth Hatası:', error.response?.data || error.message);
         res.status(500).send('Discord ile giriş hatası.');
