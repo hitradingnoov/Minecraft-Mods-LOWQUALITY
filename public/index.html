@@ -19,41 +19,27 @@
             overflow: hidden;
         }
 
-        /* Sidebar */
+        /* Sol Sidebar */
         aside.sidebar {
             width: 220px;
             background-color: #12141c;
             border-right: 1px solid #1a1d26;
             display: flex;
             flex-direction: column;
+            padding: 20px;
+            gap: 15px;
+        }
+        .sidebar-item-box {
+            background-color: #171a23;
+            border: 1px solid #262c3d;
+            border-radius: 8px;
             padding: 15px;
-            gap: 4px;
-        }
-        .logo {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fbbf24;
-            text-decoration: none;
-            margin-bottom: 15px;
-            padding: 5px;
-        }
-        .nav-item {
             color: #8b92a2;
-            text-decoration: none;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            display: block;
-        }
-        .nav-item:hover, .nav-item.active {
-            background-color: #1a1d26;
-            color: #fff;
-        }
-        .nav-item.active {
-            color: #fbbf24;
+            font-size: 14px;
+            font-weight: bold;
         }
 
-        /* Main layout */
+        /* Main Wrapper */
         .main-wrapper {
             flex: 1;
             display: flex;
@@ -61,19 +47,47 @@
             overflow-y: auto;
             background-color: #0f1015;
         }
+
+        /* Üst Kısım (Header / Balans / Kullanıcı) */
         header {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 12px 25px;
+            padding: 15px 30px;
             background-color: #12141c;
             border-bottom: 1px solid #1a1d26;
+            gap: 15px;
+        }
+        .balance-box {
+            background-color: #171a23;
+            border: 1px solid #262c3d;
+            border-radius: 8px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #fbbf24;
+        }
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            background-color: #171a23;
+            border: 1px solid #262c3d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fbbf24;
+            font-weight: bold;
         }
         .login-btn {
             background-color: #fbbf24;
             color: #0b0c10;
-            padding: 6px 16px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
@@ -82,197 +96,181 @@
             background-color: #f59e0b;
         }
 
-        /* Content */
-        .content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        /* İçerik Grid Alanı (Çizimine birebir uyumlu) */
+        .content-grid {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
 
-        .hero-banner {
+        .left-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-box {
             background-color: #151821;
             border: 1px solid #1f2330;
-            border-radius: 8px;
-            padding: 30px;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .login-card {
+            min-height: 180px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
         }
-        .hero-text h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .hero-text h1 span {
+        .login-card h3 {
+            font-size: 18px;
             color: #fbbf24;
-        }
-        .hero-text p {
-            color: #8b92a2;
-            font-size: 13px;
-            margin-bottom: 20px;
         }
         .auth-buttons {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         .auth-btn {
-            padding: 6px 14px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border-radius: 6px;
             color: white;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
         }
         .btn-discord { background-color: #5865F2; }
         .btn-google { background-color: #db4437; }
         .btn-roblox { background-color: #222; border: 1px solid #444; }
 
-        .game-cards-preview {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-        .mini-game-card {
-            background-color: #1b1f2b;
-            border: 1px solid #262c3d;
-            border-radius: 6px;
-            height: 100px;
+        .affiliates-card {
+            min-height: 140px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            font-weight: 700;
-            color: #fbbf24;
-            font-size: 13px;
         }
 
-        /* Chat */
+        .race-card {
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .news-card {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Sağ Chat Alanı */
         aside.chat-sidebar {
-            width: 260px;
+            width: 280px;
             background-color: #12141c;
             border-left: 1px solid #1a1d26;
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            padding: 20px;
         }
         .chat-header {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border-bottom: 1px solid #1a1d26;
-            padding-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
+            padding-bottom: 10px;
+            color: #8b92a2;
         }
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            font-size: 12px;
+            font-size: 13px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-        .chat-msg {
-            background-color: #171a23;
-            padding: 6px 10px;
-            border-radius: 4px;
-        }
-        .chat-msg .user {
-            font-weight: 700;
-            color: #fbbf24;
-            margin-bottom: 2px;
-        }
-        .chat-msg .text {
+            gap: 10px;
             color: #b0b5c1;
         }
         .chat-input-box {
-            margin-top: 10px;
-            display: flex;
+            margin-top: 15px;
             background-color: #171a23;
             border: 1px solid #262c3d;
-            border-radius: 4px;
-        }
-        .chat-input-box input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 8px;
-            color: white;
-            font-size: 12px;
-            outline: none;
-        }
-        .chat-input-box button {
-            background-color: #fbbf24;
-            border: none;
+            border-radius: 8px;
+            height: 40px;
+            display: flex;
+            align-items: center;
             padding: 0 10px;
-            cursor: pointer;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
+    <!-- Çizimdeki Sol Sidebar (games / go / here) -->
     <aside class="sidebar">
-        <a href="/" class="logo">BLOXGAME</a>
-        <a href="#" class="nav-item active">Casino</a>
-        <a href="#" class="nav-item">Slots</a>
-        <a href="#" class="nav-item">Blackjack</a>
-        <a href="#" class="nav-item">Roulette</a>
-        <a href="#" class="nav-item">Crash</a>
+        <div style="font-size: 18px; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">BLOXGAME</div>
+        <div class="sidebar-item-box">games</div>
+        <div class="sidebar-item-box">go</div>
+        <div class="sidebar-item-box">here</div>
     </aside>
 
+    <!-- Orta ve Üst Alan -->
     <div class="main-wrapper">
         <header>
+            <div class="balance-box">
+                <span>💎</span>
+                <span>rbx</span>
+            </div>
+            <div class="user-avatar">👤</div>
             <a href="#" class="login-btn">Log in</a>
         </header>
 
-        <div class="content">
-            <div class="hero-banner">
-                <div class="hero-text">
-                    <h1>Bet, win, and cash out <span>your way.</span></h1>
-                    <p>Deposit instantly with crypto, cards or gift cards.</p>
-                    <div style="font-size: 12px; color: #8b92a2; margin-bottom: 6px;">or continue with:</div>
+        <!-- Çizimindeki Grid Yerleşimi -->
+        <div class="content-grid">
+            <div class="left-stack">
+                <!-- log in here kutusu -->
+                <div class="card-box login-card">
+                    <h3>log in here</h3>
+                    <p style="color: #8b92a2; font-size: 13px;">Choose your provider to log in securely:</p>
                     <div class="auth-buttons">
                         <a href="/auth/discord" class="auth-btn btn-discord">Discord</a>
                         <a href="/auth/google" class="auth-btn btn-google">Google</a>
                         <a href="/auth/roblox" class="auth-btn btn-roblox">Roblox</a>
                     </div>
                 </div>
-                <div class="game-cards-preview">
-                    <div class="mini-game-card">FISHERMAN</div>
-                    <div class="mini-game-card">THE COUNT</div>
-                    <div class="mini-game-card">BONANZA</div>
+
+                <!-- affiliates here kutusu -->
+                <div class="card-box affiliates-card">
+                    <h3 style="color: #fbbf24; font-size: 16px; margin-bottom: 5px;">affiliates here</h3>
+                    <p style="color: #8b92a2; font-size: 13px;">Invite friends and earn rewards instantly.</p>
                 </div>
+
+                <!-- RACE HERE kutusu -->
+                <div class="card-box race-card">
+                    <h3 style="color: #fbbf24; font-size: 16px; margin-bottom: 5px;">RACE HERE</h3>
+                    <p style="color: #8b92a2; font-size: 13px;">The active wagering race pool details.</p>
+                </div>
+            </div>
+
+            <!-- NEWS HERE kutusu (Sağ taraf) -->
+            <div class="card-box news-card">
+                <h3 style="color: #fbbf24; font-size: 18px; margin-bottom: 10px;">NEWS HERE</h3>
+                <p style="color: #8b92a2; font-size: 14px; line-height: 1.5;">Latest platform announcements, game updates, and community highlights will appear in this section.</p>
             </div>
         </div>
     </div>
 
+    <!-- Çizimdeki Sağ CHAT Paneli -->
     <aside class="chat-sidebar">
-        <div class="chat-header">
-            <span>Chat</span>
-            <span>72 online</span>
-        </div>
+        <div class="chat-header">CHAT</div>
         <div class="chat-messages">
-            <div class="chat-msg">
-                <div class="user">beedu2001</div>
-                <div class="text">heh</div>
-            </div>
-            <div class="chat-msg">
-                <div class="user">raichu3974</div>
-                <div class="text">so close</div>
-            </div>
-            <div class="chat-msg">
-                <div class="user">denis</div>
-                <div class="text">I tought it's by 3</div>
-            </div>
+            <div><strong>User1:</strong> Hey everyone!</div>
+            <div><strong>User2:</strong> Nice win on crash</div>
+            <div><strong>User3:</strong> Let's gooo</div>
         </div>
-        <div class="chat-input-box">
-            <input type="text" placeholder="Enter your message here...">
-            <button>💬</button>
-        </div>
+        <div class="chat-input-box"></div>
     </aside>
 
     <script>
@@ -285,12 +283,15 @@
         const cookieValue = getCookie('buxify_user');
         if (cookieValue) {
             const username = decodeURIComponent(cookieValue);
-            const authButton = document.querySelector('.login-btn');
-            if (authButton) {
-                authButton.innerHTML = `${username}`;
-                authButton.href = "#";
-                authButton.style.backgroundColor = "#10b981";
-                authButton.style.color = "#ffffff";
+            const loginBtn = document.querySelector('.login-btn');
+            const avatarBox = document.querySelector('.user-avatar');
+            
+            if (loginBtn) {
+                loginBtn.style.display = 'none';
+            }
+            if (avatarBox) {
+                avatarBox.innerHTML = username.charAt(0).toUpperCase();
+                avatarBox.title = username;
             }
         }
     </script>
