@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>buxify</title>
+    <title>BloxGame</title>
     <style>
         * {
             margin: 0;
@@ -82,25 +82,26 @@
         .lock-btn:hover { background-color: #7c3aed; }
         .error-msg { color: #ef4444; font-size: 12px; margin-top: 10px; display: none; }
 
-        /* BIO VERIFICATION MODAL */
-        #login-modal {
+        /* MODALS (BIO VERIFICATION & USER PROFILE) */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 9000;
             display: none;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(4px);
         }
         .modal-card {
             background-color: #0f1118;
             border: 1px solid #1a1e2b;
             border-radius: 16px;
             padding: 30px;
-            width: 400px;
+            width: 420px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
@@ -129,6 +130,60 @@
             user-select: all;
         }
         .modal-desc { font-size: 12px; color: #8b92a2; line-height: 1.5; margin-bottom: 15px; text-align: center; }
+
+        /* PROFILE MODAL DESIGN */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .profile-avatar-large {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 3px solid #8b5cf6;
+            background-color: #131621;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            object-fit: cover;
+        }
+        .profile-user-info { text-align: center; }
+        .profile-username { font-size: 20px; font-weight: 800; color: #fff; }
+        .profile-id { font-size: 11px; color: #8b92a2; margin-top: 2px; }
+        .profile-badges { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+        .badge-vip { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px; }
+        .badge-level { background: #1e2333; color: #8b5cf6; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px; border: 1px solid #8b5cf6; }
+
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background-color: #131621;
+            border: 1px solid #1e2333;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+        .stat-card .label { font-size: 10px; color: #8b92a2; font-weight: 600; text-transform: uppercase; }
+        .stat-card .value { font-size: 14px; font-weight: 800; color: #fbbf24; margin-top: 4px; }
+
+        .btn-logout {
+            width: 100%;
+            background-color: #27141a;
+            color: #ef4444;
+            border: 1px solid #451a24;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-logout:hover { background-color: #3b1822; color: #f87171; }
 
         /* MAIN WEBSITE LAYOUT */
         .main-container {
@@ -183,7 +238,10 @@
             border: 1px solid #1e2333;
             padding: 4px 12px 4px 6px;
             border-radius: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s;
         }
+        .user-profile-box:hover { border-color: #8b5cf6; }
         .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #8b5cf6; background-color: #1e2333; }
         .user-name { font-size: 13px; font-weight: 700; color: #ffffff; }
 
@@ -308,7 +366,7 @@
     </div>
 
     <!-- PROFILE BIO VERIFICATION MODAL -->
-    <div id="login-modal">
+    <div id="login-modal" class="modal-overlay">
         <div class="modal-card">
             <span class="close-modal" id="close-modal-btn">&times;</span>
             <div class="modal-title">Roblox Verification</div>
@@ -326,6 +384,41 @@
                 </div>
             </div>
             <div id="modal-error" class="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- KULLANICI PROFİL MODALI -->
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-card">
+            <span class="close-modal" id="close-profile-btn">&times;</span>
+            <div class="profile-header">
+                <img src="" id="modal-profile-avatar" class="profile-avatar-large" alt="Avatar" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png'">
+                <div class="profile-user-info">
+                    <div class="profile-username" id="modal-profile-username">User</div>
+                    <div class="profile-id">ROBLOX ID: <span id="modal-profile-id">000000</span></div>
+                    <div class="profile-badges">
+                        <span class="badge-vip">VIP MEMBER</span>
+                        <span class="badge-level">LEVEL 1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-stats-grid">
+                <div class="stat-card">
+                    <div class="label">Wagered</div>
+                    <div class="value">💎 0.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total Wins</div>
+                    <div class="value">💎 0.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Games</div>
+                    <div class="value">0</div>
+                </div>
+            </div>
+
+            <button class="btn-logout" id="btn-logout">Log Out</button>
         </div>
     </div>
 
@@ -463,6 +556,12 @@
         const generatedCodeEl = document.getElementById('generated-code');
         const modalError = document.getElementById('modal-error');
 
+        // Profile Modal Mantığı
+        const profileBox = document.getElementById('user-profile-box');
+        const profileModal = document.getElementById('profile-modal');
+        const closeProfileBtn = document.getElementById('close-profile-btn');
+        const btnLogout = document.getElementById('btn-logout');
+
         let currentUsername = '';
         let currentCode = '';
 
@@ -530,7 +629,21 @@
             modalError.style.display = 'block';
         }
 
-        // Cookie Okuma
+        // Profile Modal Açma / Kapama
+        profileBox.addEventListener('click', () => {
+            profileModal.style.display = 'flex';
+        });
+
+        closeProfileBtn.addEventListener('click', () => {
+            profileModal.style.display = 'none';
+        });
+
+        btnLogout.addEventListener('click', () => {
+            document.cookie = 'user_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            location.reload();
+        });
+
+        // Cookie Okuma & Kullanıcı Profilini Doldurma
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -543,7 +656,6 @@
             try {
                 const userData = JSON.parse(decodeURIComponent(userCookie));
 
-                const profileBox = document.getElementById('user-profile-box');
                 const usernameEl = document.getElementById('header-username');
                 const avatarEl = document.getElementById('header-avatar');
                 const balanceEl = document.getElementById('user-balance');
@@ -554,6 +666,13 @@
                 if (usernameEl) usernameEl.textContent = userData.username;
                 if (avatarEl && userData.avatar) avatarEl.src = userData.avatar;
                 if (balanceEl) balanceEl.textContent = Number(userData.balance).toLocaleString();
+
+                // Profile Modal Doldurma
+                document.getElementById('modal-profile-username').textContent = userData.username;
+                document.getElementById('modal-profile-id').textContent = userData.id || 'N/A';
+                if (userData.avatar) {
+                    document.getElementById('modal-profile-avatar').src = userData.avatar;
+                }
             } catch(err) {
                 console.error("User session reading error:", err);
             }
