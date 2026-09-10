@@ -13,7 +13,6 @@
         }
         body {
             background-color: #08090d;
-            /* Grid Deseni ve Işık Efektleri */
             background-image: 
                 radial-gradient(circle at 50% 10%, rgba(139, 92, 246, 0.25) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
@@ -47,6 +46,15 @@
         .nav-links a { color: #8b92a2; text-decoration: none; font-weight: 600; transition: color 0.2s; }
         .nav-links a:hover { color: #fff; }
         .header-right { display: flex; align-items: center; gap: 14px; }
+        
+        /* BUX ICON KULLANIMI */
+        .currency-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
         .balance-box {
             background: linear-gradient(135deg, #171a26 0%, #131621 100%);
             border: 1px solid rgba(251, 191, 36, 0.3);
@@ -206,9 +214,18 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
         .stat-label { font-size: 11px; color: #8b92a2; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-value { font-size: 22px; font-weight: 800; color: #fbbf24; margin-top: 8px; }
+        .stat-value { 
+            font-size: 20px; 
+            font-weight: 800; 
+            color: #fbbf24; 
+            margin-top: 8px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
 
-        /* EXTRA BOTTOM PANELS */
+        /* BOTTOM PANELS */
         .bottom-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -236,6 +253,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            min-height: 120px;
         }
         .history-item {
             display: flex;
@@ -248,9 +266,21 @@
             font-size: 13px;
         }
         .history-game { font-weight: 700; color: #fff; }
-        .history-amount { font-weight: 800; }
+        .history-amount { 
+            font-weight: 800; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
         .amount-win { color: #10b981; }
         .amount-loss { color: #ef4444; }
+        .no-activity {
+            color: #6b7280;
+            font-size: 13px;
+            text-align: center;
+            padding: 30px 0;
+            font-weight: 600;
+        }
 
         .reward-card {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.05));
@@ -289,7 +319,7 @@
         </div>
         <div class="header-right">
             <div class="balance-box">
-                <span>💎</span>
+                <img src="/bux.png" class="currency-icon" alt="BUX">
                 <span id="user-balance">0.00</span> RBX
             </div>
         </div>
@@ -311,7 +341,7 @@
                 <button class="btn-logout" id="btn-logout">Log Out</button>
             </div>
 
-            <!-- Wager Seviye İlerleme Çubuğu -->
+            <!-- Wager Progress -->
             <div class="wager-progress-section">
                 <div class="progress-header">
                     <span>NEXT TIER PROGRESS</span>
@@ -327,11 +357,17 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Total Wagered</div>
-                <div class="stat-value" id="stat-wager">💎 0.00</div>
+                <div class="stat-value">
+                    <img src="/bux.png" class="currency-icon" alt="BUX">
+                    <span id="stat-wager">0.00</span>
+                </div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Total Profit / Wins</div>
-                <div class="stat-value" id="stat-wins">💎 0.00</div>
+                <div class="stat-value">
+                    <img src="/bux.png" class="currency-icon" alt="BUX">
+                    <span id="stat-wins">0.00</span>
+                </div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Games Played</div>
@@ -343,23 +379,12 @@
             </div>
         </div>
 
-        <!-- Alt Paneller (Son İşlemler ve VIP Ödülü) -->
+        <!-- Alt Paneller (Gerçek Geçmiş ve VIP Ödülü) -->
         <div class="bottom-grid">
             <div class="panel-box">
                 <div class="panel-title">📜 Recent Activity</div>
-                <div class="history-list">
-                    <div class="history-item">
-                        <span class="history-game">🎰 Mines Game</span>
-                        <span class="history-amount amount-win">+ 💎 150.00 RBX</span>
-                    </div>
-                    <div class="history-item">
-                        <span class="history-game">📦 Case Unboxing</span>
-                        <span class="history-amount amount-loss">- 💎 50.00 RBX</span>
-                    </div>
-                    <div class="history-item">
-                        <span class="history-game">🎲 Dice Roll</span>
-                        <span class="history-amount amount-win">+ 💎 200.00 RBX</span>
-                    </div>
+                <div class="history-list" id="history-container">
+                    <div class="no-activity">Loading activity history...</div>
                 </div>
             </div>
 
@@ -368,7 +393,7 @@
                 <div class="reward-card">
                     <h3>Daily Rakeback</h3>
                     <p>Claim your daily bonus based on your wager tier.</p>
-                    <button class="btn-claim">Claim 💎 10 RBX</button>
+                    <button class="btn-claim" id="btn-claim-reward">Claim Bonus</button>
                 </div>
             </div>
         </div>
@@ -401,8 +426,8 @@
                 const wins = Number(userData.wins || 0);
                 const games = Number(userData.games || 0);
 
-                document.getElementById('stat-wager').textContent = '💎 ' + wager.toLocaleString();
-                document.getElementById('stat-wins').textContent = '💎 ' + wins.toLocaleString();
+                document.getElementById('stat-wager').textContent = wager.toLocaleString();
+                document.getElementById('stat-wins').textContent = wins.toLocaleString();
                 document.getElementById('stat-games').textContent = games;
 
                 const badgeEl = document.getElementById('whale-badge');
@@ -442,8 +467,44 @@
                 badgeEl.className = 'badge-tag ' + badgeClass;
                 rankStatEl.textContent = rankName;
 
+                fetchUserHistory(userData.id);
+
             } catch(e) {
                 console.error("Profile error", e);
+            }
+        }
+
+        async function fetchUserHistory(userId) {
+            const historyContainer = document.getElementById('history-container');
+            try {
+                const response = await fetch(`/api/user/history?userId=${userId}`);
+                if (!response.ok) throw new Error('API Error');
+
+                const data = await response.json();
+
+                if (data && data.history && data.history.length > 0) {
+                    historyContainer.innerHTML = '';
+                    data.history.forEach(item => {
+                        const isWin = item.amount >= 0;
+                        const formattedAmount = isWin ? `+ ${item.amount}` : `- ${Math.abs(item.amount)}`;
+                        const amountClass = isWin ? 'amount-win' : 'amount-loss';
+
+                        const row = document.createElement('div');
+                        row.className = 'history-item';
+                        row.innerHTML = `
+                            <span class="history-game">${item.gameName || 'Game'}</span>
+                            <span class="history-amount ${amountClass}">
+                                ${formattedAmount}
+                                <img src="/bux.png" class="currency-icon" alt="BUX">
+                            </span>
+                        `;
+                        historyContainer.appendChild(row);
+                    });
+                } else {
+                    historyContainer.innerHTML = '<div class="no-activity">No recent activity found on your account.</div>';
+                }
+            } catch (err) {
+                historyContainer.innerHTML = '<div class="no-activity">No recent activity found.</div>';
             }
         }
 
