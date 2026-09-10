@@ -155,7 +155,7 @@
             width: 100%;
         }
 
-        .left-stack {
+        .left-stack, .right-stack {
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -248,6 +248,8 @@
         }
         .news-item:last-child {
             border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
         }
         .news-item h4 {
             font-size: 14px;
@@ -259,6 +261,42 @@
             color: #8b92a2;
             line-height: 1.4;
         }
+
+        /* Live Bets / Recent Wins Feed (NEWS altına gelen alan) */
+        .live-bets-card h3 {
+            color: #fbbf24;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .live-status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .bets-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .bets-table th {
+            text-align: left;
+            color: #5d6578;
+            padding-bottom: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        .bets-table td {
+            padding: 8px 0;
+            border-top: 1px solid #1a1d26;
+            color: #b0b5c1;
+        }
+        .bets-table .game-col { color: #ffffff; font-weight: bold; }
+        .bets-table .payout-col { color: #10b981; font-weight: bold; }
 
         /* Chat Sidebar */
         aside.chat-sidebar {
@@ -373,8 +411,8 @@
         </header>
 
         <div class="content-grid">
+            <!-- Sol Taraf İki Kart Stack -->
             <div class="left-stack">
-                <!-- Log in / Welcome Card -->
                 <div class="card-box login-card">
                     <h3>Bet, win, and cash out <span>your way.</span></h3>
                     <p style="color: #8b92a2; font-size: 13px;">Deposit instantly with crypto, cards or gift cards.</p>
@@ -385,7 +423,6 @@
                     </div>
                 </div>
 
-                <!-- Affiliates Card -->
                 <div class="card-box affiliates-card">
                     <h3>Affiliate Program</h3>
                     <p style="color: #8b92a2; font-size: 12px;">Share your link and earn 5% of all bets placed by your referrals.</p>
@@ -395,7 +432,6 @@
                     </div>
                 </div>
 
-                <!-- Race Card -->
                 <div class="card-box race-card">
                     <h3>Daily 2.5M Wagering Race</h3>
                     <div class="race-timer">Ends in: 18h 42m 10s</div>
@@ -412,20 +448,66 @@
                 </div>
             </div>
 
-            <!-- News Card -->
-            <div class="card-box news-card">
-                <h3>Latest Platform News</h3>
-                <div class="news-item">
-                    <h4>🚀 New Game Mode: Crash 2.0</h4>
-                    <p>Enhanced multipliers and lower house edge are now live on Crash!</p>
+            <!-- Sağ Taraf (News + Canlı Bahisler) -->
+            <div class="right-stack">
+                <div class="card-box news-card">
+                    <h3>Latest Platform News</h3>
+                    <div class="news-item">
+                        <h4>🚀 New Game Mode: Crash 2.0</h4>
+                        <p>Enhanced multipliers and lower house edge are now live on Crash!</p>
+                    </div>
+                    <div class="news-item">
+                        <h4>🎁 Instant Robux Cashouts</h4>
+                        <p>Withdrawals under 10,000 RBX are now processed instantly to your account.</p>
+                    </div>
+                    <div class="news-item">
+                        <h4>🛡️ Provably Fair Update</h4>
+                        <p>Verification seeds have been updated for increased transparency.</p>
+                    </div>
                 </div>
-                <div class="news-item">
-                    <h4>🎁 Instant Robux Cashouts</h4>
-                    <p>Withdrawals under 10,000 RBX are now processed instantly to your account.</p>
-                </div>
-                <div class="news-item">
-                    <h4>🛡️ Provably Fair Update</h4>
-                    <p>Verification seeds have been updated for increased transparency.</p>
+
+                <!-- NEWS'ın altını dolduran Canlı Bahisler Kartı -->
+                <div class="card-box live-bets-card">
+                    <h3>
+                        <span>Live Bets</span>
+                        <span class="live-status-dot"></span>
+                    </h3>
+                    <table class="bets-table">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>User</th>
+                                <th>Multiplier</th>
+                                <th>Payout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="game-col">🚀 Crash</td>
+                                <td>beedu2001</td>
+                                <td>2.45x</td>
+                                <td class="payout-col">+120.50 RBX</td>
+                            </tr>
+                            <tr>
+                                <td class="game-col">🎯 Roulette</td>
+                                <td>raichu3974</td>
+                                <td>2.00x</td>
+                                <td class="payout-col">+50.00 RBX</td>
+                            </tr>
+                            <tr>
+                                <td class="game-col">🃏 Blackjack</td>
+                                <td>Denis69</td>
+                                <td>1.50x</td>
+                                <td class="payout-col">+85.00 RBX</td>
+                            </tr>
+                            <tr>
+                                <td class="game-col">🎰 Slots</td>
+                                <td>dragonair</td>
+                                <td>10.0x</td>
+                                <td class="payout-col">+500.00 RBX</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
