@@ -14,8 +14,8 @@
         body {
             background-color: #08090d;
             background-image: 
-                radial-gradient(circle at 50% 10%, rgba(139, 92, 246, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
                 linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
@@ -24,7 +24,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            overflow-x: hidden;
         }
 
         /* HEADER */
@@ -32,8 +32,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 50px;
-            background-color: rgba(15, 17, 24, 0.85);
+            padding: 0 24px;
+            height: 70px;
+            background-color: rgba(15, 17, 24, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             position: sticky;
@@ -41,17 +42,14 @@
             z-index: 100;
             width: 100%;
         }
-        .header-left { display: flex; align-items: center; gap: 35px; }
-        .logo { font-size: 26px; font-weight: 900; color: #ffffff; text-decoration: none; letter-spacing: 0.5px; }
+        .header-left { display: flex; align-items: center; gap: 30px; }
+        .logo { font-size: 24px; font-weight: 900; color: #ffffff; text-decoration: none; letter-spacing: 0.5px; }
         .logo span { color: #8b5cf6; }
-        .nav-links { display: flex; gap: 24px; font-size: 15px; }
-        .nav-links a { color: #8b92a2; text-decoration: none; font-weight: 600; transition: color 0.2s; }
-        .nav-links a:hover { color: #fff; }
         .header-right { display: flex; align-items: center; gap: 14px; }
         
         .currency-icon {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             object-fit: contain;
             vertical-align: middle;
         }
@@ -60,27 +58,83 @@
             background: linear-gradient(135deg, #171a26 0%, #131621 100%);
             border: 1px solid rgba(251, 191, 36, 0.3);
             border-radius: 10px;
-            padding: 8px 18px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
             gap: 8px;
             font-weight: 800;
-            font-size: 15px;
+            font-size: 14px;
             color: #fbbf24;
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.1);
         }
 
-        /* MAIN CONTAINER */
-        .profile-container {
-            max-width: 1400px;
-            width: 95%;
-            margin: 40px auto;
-            padding: 0;
+        /* MAIN DÜZEN (3 KOLONLU LAYOUT) */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+            min-height: calc(100vh - 70px);
+            width: 100%;
+        }
+
+        /* SOL SIDEBAR - OYUNLAR */
+        .sidebar-left {
+            background-color: rgba(15, 17, 24, 0.85);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 20px 14px;
             display: flex;
             flex-direction: column;
             gap: 24px;
-            flex-grow: 1;
-            justify-content: center;
+        }
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #6b7280;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding-left: 10px;
+        }
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(139, 92, 246, 0.12);
+            color: #fff;
+        }
+        .nav-item.active {
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #a78bfa;
+        }
+        .nav-item .icon {
+            font-size: 18px;
+            width: 22px;
+            text-align: center;
+        }
+
+        /* ORTA ALAN - PROFİL DETAYLARI */
+        .main-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            overflow-y: auto;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         /* BANNER & CARD HEAD */
@@ -93,63 +147,54 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
         
-        /* BANNER GRADIENT TEMALARI */
         .profile-banner {
-            height: 180px;
+            height: 160px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             transition: background 0.4s ease;
         }
-        .profile-banner.theme-purple {
-            background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 50%, #0f1118 100%);
-        }
-        .profile-banner.theme-blue {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 50%, #0f1118 100%);
-        }
-        .profile-banner.theme-emerald {
-            background: linear-gradient(135deg, #064e3b 0%, #022c22 50%, #0f1118 100%);
-        }
-        .profile-banner.theme-crimson {
-            background: linear-gradient(135deg, #881337 0%, #450a0a 50%, #0f1118 100%);
-        }
+        .profile-banner.theme-purple { background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 50%, #0f1118 100%); }
+        .profile-banner.theme-blue { background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 50%, #0f1118 100%); }
+        .profile-banner.theme-emerald { background: linear-gradient(135deg, #064e3b 0%, #022c22 50%, #0f1118 100%); }
+        .profile-banner.theme-crimson { background: linear-gradient(135deg, #881337 0%, #450a0a 50%, #0f1118 100%); }
 
         .profile-banner::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15), transparent 60%);
+            background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.12), transparent 60%);
         }
         .profile-info-header {
-            padding: 0 40px 24px 40px;
+            padding: 0 30px 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: -55px;
+            margin-top: -50px;
             position: relative;
             z-index: 2;
         }
         .user-main-details {
             display: flex;
             align-items: flex-end;
-            gap: 24px;
+            gap: 20px;
         }
         .profile-avatar {
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             border: 4px solid #0f1118;
             background-color: #131621;
             object-fit: cover;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         }
         .user-titles h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
         }
         .user-id {
-            font-size: 13px;
+            font-size: 12px;
             color: #8b92a2;
-            margin-top: 4px;
+            margin-top: 2px;
             font-weight: 600;
         }
 
@@ -157,26 +202,26 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
         .theme-selector {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(19, 22, 33, 0.8);
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .theme-selector span {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             color: #8b92a2;
-            margin-right: 4px;
+            margin-right: 2px;
         }
         .theme-btn {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             border: 2px solid transparent;
             cursor: pointer;
@@ -190,15 +235,15 @@
         .btn-emerald { background: linear-gradient(135deg, #10b981, #064e3b); }
         .btn-crimson { background: linear-gradient(135deg, #f43f5e, #881337); }
 
-        /* WHALE BADGES */
+        /* BADGES */
         .badge-tag {
             display: inline-block;
-            margin-top: 8px;
-            padding: 6px 16px;
+            margin-top: 6px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
         .badge-member { background: #1e2333; color: #9ca3af; border: 1px solid #374151; }
@@ -210,10 +255,10 @@
             background-color: rgba(239, 68, 68, 0.1);
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 8px 16px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -221,21 +266,21 @@
 
         /* WAGER PROGRESS BAR */
         .wager-progress-section {
-            padding: 0 40px 28px 40px;
+            padding: 0 30px 20px 30px;
         }
         .progress-header {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #8b92a2;
         }
         .progress-bar-bg {
             background-color: #131621;
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 10px;
-            height: 16px;
+            height: 14px;
             width: 100%;
             overflow: hidden;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
@@ -252,55 +297,53 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 16px;
         }
         .stat-card {
             background-color: rgba(15, 17, 24, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 24px 20px;
+            border-radius: 16px;
+            padding: 20px 16px;
             text-align: center;
             transition: all 0.2s;
         }
         .stat-card:hover {
             transform: translateY(-3px);
             border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
-        .stat-label { font-size: 12px; color: #8b92a2; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-label { font-size: 11px; color: #8b92a2; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .stat-value { 
-            font-size: 22px; 
+            font-size: 20px; 
             font-weight: 800; 
             color: #fbbf24; 
-            margin-top: 8px; 
+            margin-top: 6px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         /* BOTTOM PANELS GRID */
         .bottom-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 16px;
         }
         .panel-box {
             background-color: rgba(15, 17, 24, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 24px;
-            min-height: 180px;
+            border-radius: 16px;
+            padding: 20px;
         }
         .panel-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #e4e4e7;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -308,17 +351,17 @@
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: rgba(19, 22, 33, 0.6);
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.03);
-            font-size: 13px;
+            font-size: 12px;
         }
         .history-game { font-weight: 700; color: #fff; }
         .history-amount { 
@@ -331,78 +374,148 @@
         .amount-loss { color: #ef4444; }
         .no-activity {
             color: #6b7280;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
-            padding: 30px 0;
+            padding: 24px 0;
             font-weight: 600;
         }
 
         .reward-card {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.05));
             border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 14px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
-            height: calc(100% - 36px);
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        .reward-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
-        .reward-card p { font-size: 12px; color: #8b92a2; margin-bottom: 14px; }
+        .reward-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+        .reward-card p { font-size: 11px; color: #8b92a2; margin-bottom: 12px; }
         .btn-claim {
             background: #8b5cf6;
             color: #fff;
             border: none;
-            padding: 10px 18px;
-            border-radius: 10px;
+            padding: 8px 14px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             width: 100%;
             transition: background 0.2s;
         }
         .btn-claim:hover { background: #7c3aed; }
 
-        .perk-list {
+        /* SAĞ SIDEBAR - CANLI CHAT */
+        .sidebar-right {
+            background-color: rgba(15, 17, 24, 0.9);
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            font-size: 13px;
-            color: #a1a1aa;
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
         }
-        .perk-item {
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 800;
+            font-size: 13px;
+            color: #e4e4e7;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.02);
+            justify-content: space-between;
+        }
+        .chat-online-count {
+            font-size: 11px;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .chat-msg {
+            background: rgba(19, 22, 33, 0.6);
             padding: 10px 12px;
             border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 12px;
+        }
+        .chat-msg-author {
+            font-weight: 800;
+            color: #8b5cf6;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chat-msg-text {
+            color: #d1d5db;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .chat-input-area {
+            padding: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input {
+            flex-grow: 1;
+            background: #131621;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+        }
+        .chat-input:focus { border-color: #8b5cf6; }
+        .chat-send-btn {
+            background: #8b5cf6;
+            color: #fff;
+            border: none;
+            padding: 0 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
         }
 
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 13px;
-            color: #52525b;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(15, 17, 24, 0.5);
-            width: 100%;
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .app-layout { grid-template-columns: 200px 1fr; }
+            .sidebar-right { display: none; }
+        }
+        @media (max-width: 850px) {
+            .app-layout { grid-template-columns: 1fr; }
+            .sidebar-left { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .bottom-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <header>
         <div class="header-left">
             <a href="/" class="logo">BLOX<span>GAME</span></a>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="#">Affiliates</a>
-                <a href="#">Rewards</a>
-                <a href="#">Leaderboard</a>
-            </div>
         </div>
         <div class="header-right">
             <div class="balance-box">
@@ -412,104 +525,154 @@
         </div>
     </header>
 
-    <div class="profile-container">
+    <!-- MAIN APP LAYOUT -->
+    <div class="app-layout">
         
-        <div class="profile-card">
-            <div class="profile-banner theme-purple" id="profile-banner"></div>
-            <div class="profile-info-header">
-                <div class="user-main-details">
-                    <img src="" id="profile-avatar" class="profile-avatar" alt="Avatar" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png'">
-                    <div class="user-titles">
-                        <h1 id="profile-username">User</h1>
-                        <div class="user-id">ROBLOX ID: <span id="profile-id">000000</span></div>
-                        <div id="whale-badge" class="badge-tag badge-member">MEMBER</div>
+        <!-- LEFT SIDEBAR: NAV & GAMES -->
+        <aside class="sidebar-left">
+            <div class="sidebar-title">GAMES</div>
+            <nav class="nav-menu">
+                <a href="/cases" class="nav-item">
+                    <span class="icon">📦</span> Case Unboxing
+                </a>
+                <a href="/battles" class="nav-item">
+                    <span class="icon">⚔️</span> Case Battles
+                </a>
+                <a href="/mines" class="nav-item">
+                    <span class="icon">💣</span> Mines
+                </a>
+                <a href="/upgrader" class="nav-item">
+                    <span class="icon">⚡</span> Upgrader
+                </a>
+            </nav>
+
+            <div class="sidebar-title">NAVIGATION</div>
+            <nav class="nav-menu">
+                <a href="/" class="nav-item">
+                    <span class="icon">🏠</span> Home
+                </a>
+                <a href="/profile" class="nav-item active">
+                    <span class="icon">👤</span> Profile
+                </a>
+                <a href="/rewards" class="nav-item">
+                    <span class="icon">🎁</span> Rewards
+                </a>
+                <a href="/affiliates" class="nav-item">
+                    <span class="icon">🤝</span> Affiliates
+                </a>
+            </nav>
+        </aside>
+
+        <!-- CENTER: PROFILE CONTENT -->
+        <main class="main-content">
+            
+            <div class="profile-card">
+                <div class="profile-banner theme-purple" id="profile-banner"></div>
+                <div class="profile-info-header">
+                    <div class="user-main-details">
+                        <img src="" id="profile-avatar" class="profile-avatar" alt="Avatar" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png'">
+                        <div class="user-titles">
+                            <h1 id="profile-username">User</h1>
+                            <div class="user-id">ROBLOX ID: <span id="profile-id">000000</span></div>
+                            <div id="whale-badge" class="badge-tag badge-member">MEMBER</div>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="theme-selector">
+                            <span>THEME:</span>
+                            <button class="theme-btn btn-purple active" onclick="setTheme('theme-purple')"></button>
+                            <button class="theme-btn btn-blue" onclick="setTheme('theme-blue')"></button>
+                            <button class="theme-btn btn-emerald" onclick="setTheme('theme-emerald')"></button>
+                            <button class="theme-btn btn-crimson" onclick="setTheme('theme-crimson')"></button>
+                        </div>
+                        <button class="btn-logout" id="btn-logout">Log Out</button>
                     </div>
                 </div>
 
-                <div class="header-actions">
-                    <div class="theme-selector">
-                        <span>BANNER:</span>
-                        <button class="theme-btn btn-purple active" onclick="setTheme('theme-purple')"></button>
-                        <button class="theme-btn btn-blue" onclick="setTheme('theme-blue')"></button>
-                        <button class="theme-btn btn-emerald" onclick="setTheme('theme-emerald')"></button>
-                        <button class="theme-btn btn-crimson" onclick="setTheme('theme-crimson')"></button>
+                <div class="wager-progress-section">
+                    <div class="progress-header">
+                        <span>NEXT TIER PROGRESS</span>
+                        <span id="progress-text">0 / 1,000,000 Wager</span>
                     </div>
-                    <button class="btn-logout" id="btn-logout">Log Out</button>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progress-fill"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="wager-progress-section">
-                <div class="progress-header">
-                    <span>NEXT TIER PROGRESS</span>
-                    <span id="progress-text">0 / 1,000,000 Wager</span>
+            <!-- İstatistik Kartları -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Wagered</div>
+                    <div class="stat-value">
+                        <img src="/bux.png" class="currency-icon" alt="BUX">
+                        <span id="stat-wager">0.00</span>
+                    </div>
                 </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progress-fill"></div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Profit / Wins</div>
+                    <div class="stat-value">
+                        <img src="/bux.png" class="currency-icon" alt="BUX">
+                        <span id="stat-wins">0.00</span>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- İstatistik Kartları -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Total Wagered</div>
-                <div class="stat-value">
-                    <img src="/bux.png" class="currency-icon" alt="BUX">
-                    <span id="stat-wager">0.00</span>
+                <div class="stat-card">
+                    <div class="stat-label">Games Played</div>
+                    <div class="stat-value" id="stat-games">0</div>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Profit / Wins</div>
-                <div class="stat-value">
-                    <img src="/bux.png" class="currency-icon" alt="BUX">
-                    <span id="stat-wins">0.00</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Games Played</div>
-                <div class="stat-value" id="stat-games">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Account Rank</div>
-                <div class="stat-value" id="stat-rank" style="color: #8b5cf6;">MEMBER</div>
-            </div>
-        </div>
-
-        <!-- Alt Paneller -->
-        <div class="bottom-grid">
-            <div class="panel-box">
-                <div class="panel-title">📜 Recent Activity</div>
-                <div class="history-list" id="history-container">
-                    <div class="no-activity">Loading activity history...</div>
+                <div class="stat-card">
+                    <div class="stat-label">Account Rank</div>
+                    <div class="stat-value" id="stat-rank" style="color: #8b5cf6;">MEMBER</div>
                 </div>
             </div>
 
-            <div class="panel-box">
-                <div class="panel-title">🎁 Rakeback & Rewards</div>
-                <div class="reward-card">
-                    <h3>Daily Rakeback</h3>
-                    <p>Claim daily bonus based on tier.</p>
-                    <button class="btn-claim" id="btn-claim-reward">Claim Bonus</button>
+            <!-- Alt Paneller -->
+            <div class="bottom-grid">
+                <div class="panel-box">
+                    <div class="panel-title">📜 Recent Activity</div>
+                    <div class="history-list" id="history-container">
+                        <div class="no-activity">Loading activity history...</div>
+                    </div>
+                </div>
+
+                <div class="panel-box">
+                    <div class="panel-title">🎁 Rakeback & Rewards</div>
+                    <div class="reward-card">
+                        <h3>Daily Rakeback</h3>
+                        <p>Claim daily bonus based on tier.</p>
+                        <button class="btn-claim" id="btn-claim-reward">Claim Bonus</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="panel-box">
-                <div class="panel-title">⚡ VIP Perks</div>
-                <div class="perk-list">
-                    <div class="perk-item">✨ 0.5% Instant Rakeback</div>
-                    <div class="perk-item">🎉 Weekly Level Bonus</div>
-                    <div class="perk-item">💎 Fast Withdrawals</div>
+        </main>
+
+        <!-- RIGHT SIDEBAR: CHAT -->
+        <aside class="sidebar-right">
+            <div class="chat-header">
+                <span>💬 CHAT ROOM</span>
+                <div class="chat-online-count">
+                    <div class="online-dot"></div>
+                    <span>42 Online</span>
                 </div>
             </div>
-        </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-msg">
+                    <div class="chat-msg-author">System Bot</div>
+                    <div class="chat-msg-text">Welcome to BloxGame Chat! Be respectful.</div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Say something...">
+                <button class="chat-send-btn" id="btn-send-chat">Send</button>
+            </div>
+        </aside>
 
     </div>
 
-    <footer>
-        &copy; 2026 BloxGame. All rights reserved.
-    </footer>
-
     <script>
+        // BANNER GRADIENT THEME SWITCHER
         function setTheme(themeName) {
             const banner = document.getElementById('profile-banner');
             banner.className = 'profile-banner ' + themeName;
@@ -523,10 +686,10 @@
             localStorage.setItem('profile_theme', themeName);
         }
 
-        // Sayfa yüklendiğinde temayı hatırla
         const savedTheme = localStorage.getItem('profile_theme') || 'theme-purple';
         setTheme(savedTheme);
 
+        // SESSION / COOKIE FETCHING
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -634,6 +797,32 @@
             }
         }
 
+        // CHAT SIMULATION
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const btnSendChat = document.getElementById('btn-send-chat');
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-msg';
+            msgDiv.innerHTML = `
+                <div class="chat-msg-author" style="color: #fbbf24;">You</div>
+                <div class="chat-msg-text">${text}</div>
+            `;
+            chatMessages.appendChild(msgDiv);
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        btnSendChat.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // LOGOUT
         document.getElementById('btn-logout').addEventListener('click', () => {
             document.cookie = 'user_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             window.location.href = '/';
