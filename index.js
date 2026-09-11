@@ -2,8 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const pool = require('./db'); // Veritabanı bağlantısı
-const userRoutes = require('./routes/userRoutes'); // Bakiye & User Rotaları
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Bakiye ve Kullanıcı Rotalarını Bağlama (/api/user/balance vb.)
+// Bakiye & User Rotaları
 app.use('/api/user', userRoutes);
 
 // 1. Kod Üretme Endpoint'i
@@ -86,28 +85,11 @@ app.post('/api/verify-bio', async (req, res) => {
                 console.error('Avatar resmi çekilemedi:', e.message);
             }
 
-            // --- VERİTABANI İŞLEMİ (UPSERT) ---
-            // Kullanıcı varsa bilgilerini güncelle, yoksa veritabanına yeni ekle
-            let currentBalance = 0.00;
-            try {
-                const dbUser = await pool.query(
-                    `INSERT INTO users (id, username, avatar, balance)
-                     VALUES ($1, $2, $3, 0.00)
-                     ON CONFLICT (id) 
-                     DO UPDATE SET username = EXCLUDED.username, avatar = EXCLUDED.avatar
-                     RETURNING balance;`,
-                    [userId, displayName, avatarUrl]
-                );
-                currentBalance = parseFloat(dbUser.rows[0].balance);
-            } catch (dbErr) {
-                console.error('Veritabanı kayıt hatası:', dbErr);
-            }
-
             const userData = {
                 id: userId,
                 username: displayName,
                 avatar: avatarUrl,
-                balance: currentBalance
+                balance: 1000.00
             };
 
             res.cookie('user_session', JSON.stringify(userData), { 
