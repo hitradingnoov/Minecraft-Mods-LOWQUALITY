@@ -2,7 +2,6 @@ const express = require('express');
 const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,9 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Bakiye & User Rotaları
-app.use('/api/user', userRoutes);
 
 // 1. Kod Üretme Endpoint'i
 app.post('/api/generate-code', (req, res) => {
