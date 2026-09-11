@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buxify - Arcade & Gaming Platform</title>
+    <title>Buxify - Casino & Arcade Games</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
@@ -12,249 +14,414 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: '#F59E0B', // Buxify Sarı/Altın Rengi
-                        bgDark: '#0D0E15',
-                        panelDark: '#151722',
-                        cardDark: '#1D1F2C'
+                        brand: '#F59E0B',
+                        bgDark: '#0E1017',
+                        panelDark: '#161923',
+                        cardDark: '#1E2230',
+                        accentYellow: '#FFB800'
                     }
                 }
             }
         }
     </script>
+    <style>
+        /* Custom Scrollbar for Chat & Main */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0E1017; }
+        ::-webkit-scrollbar-thumb { background: #222738; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #323950; }
+    </style>
 </head>
-<body class="bg-[#0D0E15] text-gray-200 font-sans min-h-screen flex flex-col overflow-x-hidden">
+<body class="bg-[#0E1017] text-gray-200 font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-amber-500 selection:text-black">
 
     <!-- TOP NAVBAR -->
-    <header class="h-16 bg-[#151722] border-b border-gray-800/80 px-4 flex items-center justify-between sticky top-0 z-40">
-        <div class="flex items-center gap-4">
-            <button class="text-gray-400 hover:text-white md:hidden"><i class="fa-solid fa-bars text-xl"></i></button>
-            <a href="/" class="flex items-center gap-2 text-2xl font-black text-amber-500 tracking-wider">
-                <i class="fa-solid fa-cube text-amber-500"></i> BUXIFY
+    <header class="h-16 bg-[#161923] border-b border-gray-800/60 px-4 flex items-center justify-between sticky top-0 z-40">
+        <!-- Logo & Mobile Toggle -->
+        <div class="flex items-center gap-3">
+            <button class="text-gray-400 hover:text-white md:hidden"><i class="fa-solid fa-bars text-lg"></i></button>
+            <a href="/" class="flex items-center gap-2 text-xl font-black text-amber-500 tracking-wider">
+                <div class="w-8 h-8 rounded-lg bg-amber-500 text-black flex items-center justify-center font-black text-lg">B</div>
+                <span class="text-white">BUX<span class="text-amber-500">IFY</span></span>
             </a>
         </div>
 
-        <!-- SAĞ ÜST: Kullanıcı Profil & Bakiye / Login -->
+        <!-- SAĞ ÜST: Giriş Yapılmamış (Login Button) / Giriş Yapılmış (Profil Dropdown) -->
         <div class="flex items-center gap-3">
-            <!-- Giriş Yapmış Kullanıcı Görünümü (Varsayılan Hidden) -->
-            <div id="user-logged-in" class="flex items-center gap-3">
-                <!-- Bakiye Kutusu -->
-                <div class="bg-[#1D1F2C] border border-amber-500/30 rounded-lg px-3 py-1.5 flex items-center gap-2">
-                    <i class="fa-solid fa-[#F59E0B] fa-coins text-amber-400"></i>
-                    <span id="user-balance" class="text-white font-extrabold text-sm">0.00</span>
-                    <span class="text-xs font-bold text-amber-400">BUX</span>
+            
+            <!-- 1. GİRİŞ YAPILMAMIŞ DURUM -->
+            <button id="btn-login-header" onclick="openLoginModal()" class="bg-[#FFB800] hover:bg-yellow-400 text-black font-extrabold px-5 py-2 rounded-lg text-sm transition-all shadow-md shadow-amber-500/10 flex items-center gap-2">
+                Log in
+            </button>
+
+            <!-- 2. GİRİŞ YAPILMIŞ DURUM (Varsayılan Hidden) -->
+            <div id="user-profile-wrapper" class="relative hidden">
+                <div class="flex items-center gap-3">
+                    <!-- Bakiye Kartı -->
+                    <div class="bg-[#1E2230] border border-amber-500/30 rounded-lg px-3 py-1.5 flex items-center gap-2">
+                        <i class="fa-solid fa-coins text-amber-400 text-xs"></i>
+                        <span id="user-balance" class="text-white font-black text-sm">0.00</span>
+                        <span class="text-[10px] font-bold text-amber-400 uppercase">BUX</span>
+                    </div>
+
+                    <!-- Profil Butonu (Tıklayınca Açılır) -->
+                    <button onclick="toggleProfileMenu()" class="flex items-center gap-2 bg-[#1E2230] hover:bg-[#272C3D] p-1.5 pr-3 rounded-lg border border-gray-700/60 transition-all">
+                        <img id="user-avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png" alt="Avatar" class="w-7 h-7 rounded-md object-cover border border-amber-500/50">
+                        <span id="user-display-name" class="text-xs font-bold text-gray-200">Kullanıcı</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 ml-1"></i>
+                    </button>
                 </div>
 
-                <!-- Profil Alanı (Avatar + Isim) -->
-                <div class="flex items-center gap-2.5 bg-[#1D1F2C] p-1.5 pr-3 rounded-lg border border-gray-800">
-                    <img id="user-avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png" alt="Avatar" class="w-7 h-7 rounded-md border border-gray-700 object-cover">
-                    <span id="user-display-name" class="text-xs font-bold text-gray-200">Kullanıcı</span>
+                <!-- PROFİL DROPDOWN MENÜSÜ -->
+                <div id="profile-dropdown" class="absolute right-0 mt-2 w-56 bg-[#161923] border border-gray-700/80 rounded-xl shadow-2xl p-2 hidden z-50 space-y-1">
+                    <div class="px-3 py-2 border-b border-gray-800">
+                        <div class="text-[10px] text-gray-400 font-semibold uppercase">Hesabım</div>
+                        <div id="dropdown-username" class="text-xs font-bold text-amber-400 truncate">@Kullanıcı</div>
+                    </div>
+                    <a href="/profile" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-300 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-user w-4 text-amber-400"></i> Profil Detayları
+                    </a>
+                    <a href="/transactions" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-300 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-receipt w-4 text-blue-400"></i> İşlem Geçmişi
+                    </a>
+                    <button onclick="logoutUser()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-red-400 hover:bg-red-500/10 transition-all text-left">
+                        <i class="fa-solid fa-right-from-bracket w-4"></i> Çıkış Yap
+                    </button>
                 </div>
             </div>
 
-            <!-- Giriş Yapmamış İse Gösterilecek Buton -->
-            <button id="btn-open-login" onclick="document.getElementById('login-modal').classList.remove('hidden')" class="bg-amber-500 hover:bg-amber-400 text-gray-950 font-black px-5 py-2 rounded-lg text-sm transition-all shadow-lg shadow-amber-500/20">
-                Log in
-            </button>
         </div>
     </header>
 
-    <!-- ANA DÜZEN (Sidebar + Content + Chat) -->
+    <!-- MAIN BODY LAYOUT -->
     <div class="flex-1 flex overflow-hidden">
 
-        <!-- 1. SOL SIDEBAR -->
-        <aside class="w-56 bg-[#151722] border-r border-gray-800/80 hidden md:flex flex-col justify-between p-3 shrink-0">
-            <div class="space-y-6">
-                <!-- Kategoriler -->
-                <div>
-                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-3 mb-2">Oyunlar</div>
-                    <nav class="space-y-1">
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-amber-500/10 text-amber-400 font-bold text-sm">
-                            <i class="fa-solid fa-bomb w-4"></i> Mines
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
-                            <i class="fa-solid fa-circle-notch w-4"></i> Roulette
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
-                            <i class="fa-solid fa-dice w-4"></i> Slots
-                        </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
-                            <i class="fa-solid fa-[#F59E0B] fa-chart-line w-4"></i> Crash
-                        </a>
-                    </nav>
-                </div>
+        <!-- 1. SOL SIDEBAR (Görseldeki Sol Menü Birebir) -->
+        <aside class="w-52 bg-[#161923] border-r border-gray-800/60 hidden md:flex flex-col justify-between p-3 shrink-0 overflow-y-auto">
+            <div class="space-y-4">
+                <!-- Oyunlar Listesi -->
+                <nav class="space-y-0.5 text-xs font-bold">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-spade w-4 text-gray-400"></i> Poker
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-dice w-4 text-gray-400"></i> Casino <i class="fa-solid fa-chevron-down text-[9px] ml-auto"></i>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <span class="w-4 text-center">7</span> Slots
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-heart w-4 text-gray-400"></i> Blackjack
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-circle-notch w-4 text-gray-400"></i> Roulette
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-tv w-4 text-gray-400"></i> Game Shows
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-chart-line w-4 text-gray-400"></i> Crash
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-cubes w-4 text-gray-400"></i> Craps
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-bolt w-4 text-gray-400"></i> Instant Win
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-[#1E2230] hover:text-white transition-all">
+                        <i class="fa-solid fa-ticket w-4 text-gray-400"></i> Lottery & Keno
+                    </a>
 
-                <div>
-                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-3 mb-2">Topluluk</div>
-                    <nav class="space-y-1">
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
-                            <i class="fa-brands fa-discord w-4"></i> Discord
+                    <!-- Originals (Mines Buraya Vurgulandı) -->
+                    <div class="pt-2 border-t border-gray-800">
+                        <a href="/mines" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 font-extrabold transition-all">
+                            <i class="fa-solid fa-bomb w-4 text-amber-500"></i> Mines (Original)
                         </a>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
-                            <i class="fa-solid fa-headset w-4"></i> Destek
-                        </a>
-                    </nav>
-                </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Destek & Discord -->
+            <div class="pt-4 border-t border-gray-800 space-y-1 text-xs font-semibold">
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-headset w-4"></i> Support
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white">
+                    <i class="fa-brands fa-discord w-4"></i> Discord
+                </a>
             </div>
         </aside>
 
-        <!-- 2. ORTA İÇERİK ALANI -->
-        <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+        <!-- 2. ORTA İÇERİK (HERO + VİTRİN + RACE LEADERBOARD) -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-8">
 
-            <!-- Banner / Hero Section (Görseldeki Tarz) -->
-            <div class="bg-gradient-to-r from-[#1D1F2C] to-[#151722] border border-gray-800 rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-3 max-w-xl z-10">
-                    <h1 class="text-3xl font-black text-white leading-tight">
+            <!-- HERO BANNER (Görseldeki Birebir Layout) -->
+            <div class="bg-gradient-to-r from-[#1E2230] via-[#161923] to-[#12141C] border border-gray-800/80 rounded-2xl p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                
+                <!-- Sol Taraf: Başlık ve Giriş Seçenekleri -->
+                <div class="space-y-4 max-w-lg z-10">
+                    <h1 class="text-3xl md:text-4xl font-black text-white leading-tight">
                         Bet, win, and <span class="text-amber-400">cash out</span> your way.
                     </h1>
                     <p class="text-xs text-gray-400 leading-relaxed">
-                        Roblox hesabınla anında giriş yap, Mines ve Roulette gibi oyunlarla bakiyeni katla!
+                        Deposit instantly with crypto, cards or gift cards. Play games, then cash your winnings out for gift cards or crypto.
                     </p>
-                    <div class="flex items-center gap-4 text-xs font-bold text-gray-300 pt-2">
-                        <span><i class="fa-solid fa-bolt text-amber-400 mr-1"></i> Anında Doğrulama</span>
-                        <span><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> %100 Adil Sistem</span>
+                    
+                    <!-- Özellik Rozetleri -->
+                    <div class="flex flex-wrap items-center gap-4 text-[11px] font-bold text-gray-300 pt-1">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-amber-400"></i> Instant deposits</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-amber-400"></i> Provably fair originals</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-amber-400"></i> Cash out to gift cards & crypto</span>
+                    </div>
+
+                    <!-- Giriş / Roblox Bağlantı Alanı -->
+                    <div class="pt-3 flex flex-col sm:flex-row items-center gap-3">
+                        <button onclick="openLoginModal()" class="w-full sm:w-auto bg-[#FFB800] hover:bg-yellow-400 text-black font-extrabold px-6 py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10">
+                            <i class="fa-solid fa-[#000] fa-gamepad text-sm"></i> Roblox İle Giriş Yap
+                        </button>
+                        <button onclick="openLoginModal()" class="w-full sm:w-auto bg-[#5865F2] hover:bg-indigo-600 text-white font-bold px-4 py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-discord"></i> Discord
+                        </button>
+                        <button onclick="openLoginModal()" class="w-full sm:w-auto bg-white hover:bg-gray-100 text-black font-bold px-4 py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-google"></i> Google
+                        </button>
                     </div>
                 </div>
+
+                <!-- Sağ Taraf: Kart Koleksiyonu (Mines & Slots) -->
+                <div class="grid grid-cols-2 gap-3 w-full md:w-72 shrink-0 z-10">
+                    <a href="/mines" class="bg-[#1E2230] border border-amber-500/40 hover:border-amber-500 p-4 rounded-xl flex flex-col items-center justify-center gap-2 h-36 group transition-all shadow-xl">
+                        <i class="fa-solid fa-bomb text-4xl text-amber-500 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-black text-xs text-white">MINES</span>
+                        <span class="text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">OYNA</span>
+                    </a>
+                    <div class="bg-[#1E2230] border border-gray-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 h-36 opacity-70">
+                        <i class="fa-solid fa-ghost text-4xl text-purple-400"></i>
+                        <span class="font-black text-xs text-white">THE COUNT</span>
+                        <span class="text-[9px] text-gray-400 font-bold">Yakında</span>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- MINES OYUN ALANI -->
-            <section class="bg-[#151722] border border-gray-800 rounded-2xl p-4 md:p-6 max-w-4xl mx-auto shadow-2xl">
-                <div class="flex flex-col md:flex-row gap-6">
-                    
-                    <!-- Sol: Kontrol Paneli -->
-                    <div class="bg-[#1D1F2C] border border-gray-800/80 p-5 rounded-xl flex flex-col justify-between gap-5 w-full md:w-80">
-                        <div class="space-y-4">
-                            <h2 class="text-sm font-bold text-gray-200 uppercase tracking-wider border-b border-gray-800 pb-2">Mines Ayarları</h2>
+            <!-- RACE BANNER (Görseldeki Şerit) -->
+            <div class="bg-gradient-to-r from-amber-500/10 via-[#161923] to-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-center text-xs font-bold text-gray-200">
+                The race is on for <span class="text-amber-400 font-black"><i class="fa-solid fa-coins"></i> 2.5M BUX!</span> Ends in: <span class="font-mono text-white bg-[#1E2230] px-2 py-1 rounded border border-gray-700">24:18:46:36</span>
+            </div>
 
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Bahis Miktarı (BUX)</label>
-                                <input type="number" id="mines-bet-amount" value="10" min="1" step="1" 
-                                    class="w-full bg-[#151722] border border-gray-700 rounded-lg p-2.5 text-white font-bold text-sm focus:outline-none focus:border-amber-500">
-                            </div>
-
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Mayın Sayısı</label>
-                                <select id="mines-count" 
-                                    class="w-full bg-[#151722] border border-gray-700 rounded-lg p-2.5 text-white font-bold text-sm focus:outline-none focus:border-amber-500">
-                                    <option value="1">1 Mayın</option>
-                                    <option value="3" selected>3 Mayın</option>
-                                    <option value="5">5 Mayın</option>
-                                    <option value="10">10 Mayın</option>
-                                    <option value="15">15 Mayın</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button id="btn-start-mines" onclick="MinesGame.startGame()" 
-                                class="w-full bg-amber-500 hover:bg-amber-400 font-black py-3.5 px-4 rounded-xl text-gray-950 shadow-lg shadow-amber-500/10 transition-all">
-                                Oyunu Başlat
-                            </button>
-
-                            <button id="btn-cashout-mines" onclick="MinesGame.cashout()" 
-                                class="w-full bg-emerald-500 hover:bg-emerald-400 font-black py-3.5 px-4 rounded-xl text-gray-950 shadow-lg shadow-emerald-500/10 transition-all hidden">
-                                Cashout
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Sağ: Grid -->
-                    <div class="flex-1 flex justify-center items-center bg-[#1D1F2C]/50 border border-gray-800/80 p-6 rounded-xl min-h-[340px]">
-                        <div id="mines-grid" class="grid grid-cols-5 gap-2.5 w-full max-w-[320px]"></div>
-                    </div>
-
-                </div>
-            </section>
+            <!-- LEADERBOARD TABLE (Görseldeki Tablo Birebir) -->
+            <div class="bg-[#161923] border border-gray-800/80 rounded-2xl p-4 overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="text-gray-500 uppercase text-[10px] border-b border-gray-800/80 pb-2">
+                            <th class="pb-3 font-semibold">Rank</th>
+                            <th class="pb-3 font-semibold">Username</th>
+                            <th class="pb-3 font-semibold">Total Wagered</th>
+                            <th class="pb-3 font-semibold text-right">Prize</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800/50 font-medium text-gray-300">
+                        <tr>
+                            <td class="py-3 text-amber-400 font-black">#1</td>
+                            <td class="py-3 flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center text-[10px] font-bold">T</div>
+                                trout7126
+                            </td>
+                            <td class="py-3 font-mono">70,796,945</td>
+                            <td class="py-3 text-right font-black text-amber-400"><i class="fa-solid fa-coins"></i> 1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-gray-400 font-bold">#2</td>
+                            <td class="py-3 flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-[10px] font-bold">A</div>
+                                arabellafigg1481
+                            </td>
+                            <td class="py-3 font-mono">60,700,017</td>
+                            <td class="py-3 text-right font-black text-amber-400"><i class="fa-solid fa-coins"></i> 500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-gray-400 font-bold">#3</td>
+                            <td class="py-3 flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">Q</div>
+                                QuanDuong
+                            </td>
+                            <td class="py-3 font-mono">19,040,616</td>
+                            <td class="py-3 text-right font-black text-amber-400"><i class="fa-solid fa-coins"></i> 362,500</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </main>
 
-        <!-- 3. SAĞ CANLI CHAT (Görseldeki Birebir Sağ Bar) -->
-        <aside class="w-72 bg-[#151722] border-l border-gray-800/80 hidden lg:flex flex-col justify-between shrink-0">
+        <!-- 3. SAĞ CANLI CHAT (Görseldeki Birebir Chat Barlat) -->
+        <aside class="w-72 bg-[#161923] border-l border-gray-800/60 hidden lg:flex flex-col justify-between shrink-0">
+            <!-- Chat Header -->
             <div class="p-3 border-b border-gray-800 flex items-center justify-between">
-                <span class="text-xs font-bold text-gray-300 flex items-center gap-2">
-                    <i class="fa-solid fa-comments text-amber-500"></i> Canlı Chat
+                <span class="text-xs font-extrabold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-amber-500"></i> Chat
                 </span>
-                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full font-bold">● 72 Online</span>
+                <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 72 online
+                </span>
             </div>
 
-            <!-- Mesaj Listesi -->
-            <div class="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
-                <div class="bg-[#1D1F2C] p-2.5 rounded-lg border border-gray-800/50">
-                    <div class="flex items-center justify-between text-[10px] text-gray-400 mb-1">
-                        <span class="font-bold text-amber-400">Beedu2001</span>
-                        <span>12:24</span>
-                    </div>
-                    <p class="text-gray-300">Mines'ta 5x yakaladım harika!</p>
+            <!-- Rain Pool Bar -->
+            <div class="m-3 p-2.5 bg-[#1E2230] border border-gray-800 rounded-xl space-y-1">
+                <div class="flex items-center justify-between text-[10px]">
+                    <span class="text-gray-400 font-bold uppercase">● Rain Pool</span>
+                    <span class="text-gray-500">Rains in 11:09</span>
+                </div>
+                <div class="text-sm font-black text-amber-400 flex items-center gap-1">
+                    <i class="fa-solid fa-coins"></i> 7,604.68
+                </div>
+                <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-amber-500 h-full w-2/3"></div>
                 </div>
             </div>
 
-            <!-- Mesaj Gönderme Kutusu -->
-            <div class="p-3 border-t border-gray-800 bg-[#1D1F2C]">
-                <input type="text" placeholder="Mesajını yaz..." class="w-full bg-[#151722] border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            <!-- Chat Mesaj Akışı -->
+            <div class="flex-1 overflow-y-auto px-3 space-y-3 text-xs">
+                <div class="space-y-0.5">
+                    <div class="flex items-center justify-between text-[10px] text-gray-500">
+                        <span class="font-bold text-amber-400">Beedu2001 <span class="text-[8px] bg-gray-800 px-1 rounded text-gray-400">US</span></span>
+                        <span>02:24AM</span>
+                    </div>
+                    <p class="text-gray-300 bg-[#1E2230] p-2 rounded-lg">heh</p>
+                </div>
+                <div class="space-y-0.5">
+                    <div class="flex items-center justify-between text-[10px] text-gray-500">
+                        <span class="font-bold text-gray-300">raichu3974 <span class="text-[8px] bg-gray-800 px-1 rounded text-gray-400">.COM</span></span>
+                        <span>02:24AM</span>
+                    </div>
+                    <p class="text-gray-300 bg-[#1E2230] p-2 rounded-lg">so close</p>
+                </div>
+            </div>
+
+            <!-- Input Box -->
+            <div class="p-3 border-t border-gray-800 bg-[#161923]">
+                <div class="relative">
+                    <input type="text" placeholder="Enter your message here..." class="w-full bg-[#1E2230] border border-gray-700/60 rounded-xl p-2.5 pr-8 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <button class="absolute right-2 top-2.5 text-amber-500 hover:text-amber-400"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                </div>
             </div>
         </aside>
 
     </div>
 
-    <!-- ROBLOX GİRİŞ MODAL (Görseldeki Login Tarzı) -->
+    <!-- ROBLOX GİRİŞ MODAL (POPUP) -->
     <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-[#151722] border border-gray-800 rounded-2xl w-full max-w-md p-6 space-y-5 relative">
-            <button onclick="document.getElementById('login-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+        <div class="bg-[#161923] border border-gray-700/80 rounded-2xl w-full max-w-md p-6 space-y-5 relative shadow-2xl">
+            <!-- Kapat Butonu -->
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
+            <!-- Modal Başlık -->
             <div class="text-center space-y-1">
+                <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-2xl mx-auto flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
                 <h3 class="text-xl font-black text-white">Roblox İle Giriş Yap</h3>
-                <p class="text-xs text-gray-400">Roblox profil açıklamanıza verilen kodu ekleyerek doğrulayın.</p>
+                <p class="text-xs text-gray-400">Roblox kullanıcı adını girerek bakiyenle hemen oynamaya başla.</p>
             </div>
 
-            <!-- Seçenekler -->
-            <div class="space-y-3 pt-2">
-                <button class="w-full bg-[#1D1F2C] hover:bg-gray-800 border border-gray-700 p-3 rounded-xl flex items-center justify-center gap-3 font-bold text-sm text-white transition-all">
-                    <i class="fa-solid fa-gamepad text-red-500 text-lg"></i> Roblox Bio İle Doğrula
+            <!-- Roblox Formu -->
+            <form id="roblox-login-form" onsubmit="handleRobloxLogin(event)" class="space-y-4 pt-2">
+                <div>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Roblox Kullanıcı Adı</label>
+                    <input type="text" id="roblox-username-input" required placeholder="Örn: Builderman" class="w-full bg-[#1E2230] border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-500 font-semibold">
+                </div>
+
+                <button type="submit" class="w-full bg-[#FFB800] hover:bg-yellow-400 text-black font-black p-3.5 rounded-xl text-sm transition-all shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Hesabı Doğrula & Giriş Yap
                 </button>
-            </div>
+            </form>
         </div>
     </div>
 
-    <!-- SCRIPT DOSYALARI -->
+    <!-- JAVASCRIPT SENKRONİZASYON KODLARI -->
     <script>
-        window.BuxifyBalance = {
-            updateUI(newBalance) {
-                const balEl = document.getElementById('user-balance');
-                if (balEl && newBalance !== undefined) {
-                    balEl.textContent = parseFloat(newBalance).toFixed(2);
-                }
-            }
-        };
+        // Modal Aç / Kapat
+        function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); }
 
-        // Sayfa Yüklendiğinde Oturumu ve Bakiyeyi Senkronize Et
+        // Profil Dropdown Aç / Kapat
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Dışarı tıklanınca dropdown kapatma
+        window.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('user-profile-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('profile-dropdown').classList.add('hidden');
+            }
+        });
+
+        // Roblox İle Giriş Simülasyonu
+        function handleRobloxLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('roblox-username-input').value;
+            if(!username) return;
+
+            const dummyUser = {
+                id: 'rbx_' + Math.floor(Math.random() * 899999 + 100000),
+                username: username,
+                avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png',
+                balance: 100.00
+            };
+
+            // Session Cookie Set
+            document.cookie = `user_session=${encodeURIComponent(JSON.stringify(dummyUser))}; path=/; max-age=86400`;
+            closeLoginModal();
+            location.reload();
+        }
+
+        // Çıkış Yap
+        function logoutUser() {
+            document.cookie = "user_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            location.reload();
+        }
+
+        // Sayfa Yüklendiğinde Oturum Kontrolü
         document.addEventListener('DOMContentLoaded', async () => {
             const cookies = document.cookie.split('; ');
             const userCookie = cookies.find(row => row.startsWith('user_session='));
+
             if (userCookie) {
                 try {
                     const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
-                    if (userData && userData.id) {
-                        // Profil Bilgilerini Bas
-                        document.getElementById('user-display-name').textContent = userData.username || 'Kullanıcı';
+                    if (userData && userData.username) {
+                        // Giriş butonunu gizle, Profil alanını göster
+                        document.getElementById('btn-login-header').classList.add('hidden');
+                        document.getElementById('user-profile-wrapper').classList.remove('hidden');
+
+                        // Kullanıcı bilgilerini yerleştir
+                        document.getElementById('user-display-name').textContent = userData.username;
+                        document.getElementById('dropdown-username').textContent = '@' + userData.username;
                         if (userData.avatar) {
                             document.getElementById('user-avatar').src = userData.avatar;
                         }
-                        document.getElementById('btn-open-login').classList.add('hidden');
 
-                        // Bakiyeyi Çek
-                        const res = await fetch(`/api/user-balance?user_id=${userData.id}`);
-                        const data = await res.json();
-                        if (data.success) {
-                            window.BuxifyBalance.updateUI(data.balance);
+                        // Sunucudan gerçek bakiyeyi al
+                        try {
+                            const res = await fetch(`/api/user-balance?user_id=${userData.id}`);
+                            const data = await res.json();
+                            if (data.success) {
+                                document.getElementById('user-balance').textContent = parseFloat(data.balance).toFixed(2);
+                            } else {
+                                document.getElementById('user-balance').textContent = parseFloat(userData.balance || 0).toFixed(2);
+                            }
+                        } catch(err) {
+                            document.getElementById('user-balance').textContent = parseFloat(userData.balance || 0).toFixed(2);
                         }
                     }
                 } catch(e) {
-                    console.error("Session hatası", e);
+                    console.error("Session okunurken hata oluştu:", e);
                 }
             }
         });
     </script>
-    <script src="/js/games/mines.js"></script>
 </body>
 </html>
