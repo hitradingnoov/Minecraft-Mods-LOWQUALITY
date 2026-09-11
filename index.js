@@ -172,8 +172,7 @@ app.post('/api/verify-bio', async (req, res) => {
 
                 avatar: avatarUrl,
 
-                balance: 1000.00
-
+                balance: 0.61
             };
 
 
