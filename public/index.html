@@ -1,672 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloxGame</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    <title>Buxify - Arcade & Gaming Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#F59E0B', // Buxify Sarı/Altın Rengi
+                        bgDark: '#0D0E15',
+                        panelDark: '#151722',
+                        cardDark: '#1D1F2C'
+                    }
+                }
+            }
         }
-        body {
-            background-color: #08090d;
-            color: #ffffff;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* ADMIN LOCK SCREEN */
-        #admin-lock-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #08090d;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .lock-card {
-            background-color: #0f1118;
-            border: 1px solid #1a1e2b;
-            border-radius: 16px;
-            padding: 40px;
-            width: 360px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .lock-logo {
-            width: 140px;
-            height: auto;
-            margin-bottom: 20px;
-        }
-        .lock-card h2 {
-            font-size: 18px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
-        .lock-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .lock-input {
-            background-color: #131621;
-            border: 1px solid #1e2333;
-            border-radius: 8px;
-            padding: 12px;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            text-align: center;
-        }
-        .lock-input:focus { border-color: #8b5cf6; }
-        .lock-btn {
-            background-color: #8b5cf6;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .lock-btn:hover { background-color: #7c3aed; }
-        .error-msg { color: #ef4444; font-size: 12px; margin-top: 10px; display: none; }
-
-        /* MODALS (BIO VERIFICATION & USER PROFILE) */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.85);
-            z-index: 9000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(4px);
-        }
-        .modal-card {
-            background-color: #0f1118;
-            border: 1px solid #1a1e2b;
-            border-radius: 16px;
-            padding: 30px;
-            width: 420px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        }
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            color: #8b92a2;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .close-modal:hover { color: #fff; }
-        .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 15px; text-align: center; }
-        .code-box {
-            background-color: #131621;
-            border: 1px dashed #8b5cf6;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: 900;
-            color: #8b5cf6;
-            letter-spacing: 2px;
-            margin: 15px 0;
-            user-select: all;
-        }
-        .modal-desc { font-size: 12px; color: #8b92a2; line-height: 1.5; margin-bottom: 15px; text-align: center; }
-
-        /* PROFILE MODAL DESIGN */
-        .profile-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        .profile-avatar-large {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            border: 3px solid #8b5cf6;
-            background-color: #131621;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-            object-fit: cover;
-        }
-        .profile-user-info { text-align: center; }
-        .profile-username { font-size: 20px; font-weight: 800; color: #fff; }
-        .profile-id { font-size: 11px; color: #8b92a2; margin-top: 2px; }
-        .profile-badges { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
-        .badge-vip { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px; }
-        .badge-level { background: #1e2333; color: #8b5cf6; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px; border: 1px solid #8b5cf6; }
-
-        .profile-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background-color: #131621;
-            border: 1px solid #1e2333;
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-        }
-        .stat-card .label { font-size: 10px; color: #8b92a2; font-weight: 600; text-transform: uppercase; }
-        .stat-card .value { font-size: 14px; font-weight: 800; color: #fbbf24; margin-top: 4px; }
-
-        .btn-logout {
-            width: 100%;
-            background-color: #27141a;
-            color: #ef4444;
-            border: 1px solid #451a24;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-logout:hover { background-color: #3b1822; color: #f87171; }
-
-        /* MAIN WEBSITE LAYOUT */
-        .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
-            background-color: #0f1118;
-            border-bottom: 1px solid #1a1e2b;
-        }
-        .header-left { display: flex; align-items: center; gap: 25px; }
-        .logo { font-size: 22px; font-weight: 900; color: #ffffff; text-decoration: none; }
-        .logo span { color: #8b5cf6; }
-        .nav-links { display: flex; gap: 18px; font-size: 13px; }
-        .nav-links a { color: #8b92a2; text-decoration: none; font-weight: 600; }
-        .nav-links a:hover { color: #fff; }
-        .header-right { display: flex; align-items: center; gap: 12px; }
-        .balance-box {
-            background-color: #171a26;
-            border: 1px solid #252a3d;
-            border-radius: 8px;
-            padding: 6px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 13px;
-            color: #fbbf24;
-        }
-        .btn-login {
-            background-color: #8b5cf6;
-            color: #fff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .btn-login:hover { background-color: #7c3aed; }
-        .user-profile-box {
-            display: none;
-            align-items: center;
-            gap: 10px;
-            background-color: #131621;
-            border: 1px solid #1e2333;
-            padding: 4px 12px 4px 6px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-        .user-profile-box:hover { border-color: #8b5cf6; }
-        .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #8b5cf6; background-color: #1e2333; }
-        .user-name { font-size: 13px; font-weight: 700; color: #ffffff; }
-
-        .items-bar {
-            background-color: #0c0e14;
-            padding: 8px 20px;
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            border-bottom: 1px solid #1a1e2b;
-        }
-        .item-card {
-            background-color: #131621;
-            border: 1px solid #1e2333;
-            border-radius: 6px;
-            padding: 6px 12px;
-            min-width: 100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .item-name { color: #8b92a2; font-size: 11px; }
-        .item-price { color: #fbbf24; font-size: 11px; font-weight: bold; }
-
-        .content-area { padding: 24px; display: flex; flex-direction: column; gap: 28px; }
-        .banners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .banner-card {
-            border-radius: 12px;
-            padding: 22px;
-            height: 135px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .banner-deposit { background: linear-gradient(135deg, #06381e 0%, #0a1f14 100%); }
-        .banner-race { background: linear-gradient(135deg, #3b136b 0%, #170a2c 100%); }
-        .banner-discord { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
-        .banner-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-        .banner-card p { font-size: 12px; color: #a1a1aa; }
-        .banner-btn {
-            margin-top: 12px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: none;
-            background: rgba(255,255,255,0.12);
-            color: #fff;
-            font-size: 11px;
-            font-weight: bold;
-            width: fit-content;
-            cursor: pointer;
-        }
-
-        .section-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; color: #e4e4e7; text-transform: uppercase; }
-        .games-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
-        .game-card {
-            background-color: #131621;
-            border: 1px solid #1e2333;
-            border-radius: 10px;
-            height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .game-card:hover { transform: translateY(-4px); border-color: #8b5cf6; }
-        .game-card h3 { font-size: 13px; font-weight: 800; text-transform: uppercase; }
-        .game-card span { font-size: 10px; color: #71717a; margin-top: 2px; }
-
-        .card-battles { background: linear-gradient(180deg, #2a121a 0%, #131621 100%); }
-        .card-cases { background: linear-gradient(180deg, #09281a 0%, #131621 100%); }
-        .card-mines { background: linear-gradient(180deg, #121d3a 0%, #131621 100%); }
-        .card-bj { background: linear-gradient(180deg, #2b1118 0%, #131621 100%); }
-        .card-towers { background: linear-gradient(180deg, #2d1c07 0%, #131621 100%); }
-        .card-upgrade { background: linear-gradient(180deg, #0a2628 0%, #131621 100%); }
-        .card-dice { background: linear-gradient(180deg, #2e0e17 0%, #131621 100%); }
-
-        aside.chat-sidebar {
-            width: 290px;
-            background-color: #0f1118;
-            border-left: 1px solid #1a1e2b;
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-top-header { padding: 14px 16px; border-bottom: 1px solid #1a1e2b; display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; }
-        .rain-pool-box {
-            background-color: #131621;
-            margin: 12px 16px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid #1e2333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .rain-amount { font-weight: 800; color: #8b5cf6; font-size: 13px; }
-        .chat-messages { flex: 1; padding: 10px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
-        .chat-row { display: flex; gap: 8px; align-items: flex-start; }
-        .badge { background-color: #1e2333; color: #8b5cf6; font-size: 10px; padding: 2px 5px; border-radius: 4px; font-weight: 800; }
-        .chat-uname { font-weight: 700; color: #e4e4e7; }
-        .chat-text { color: #9ca3af; margin-top: 2px; }
-        .chat-footer { padding: 12px 16px; border-top: 1px solid #1a1e2b; }
-        .chat-footer input { width: 100%; background-color: #131621; border: 1px solid #1e2333; padding: 10px; border-radius: 6px; color: #fff; font-size: 12px; outline: none; }
-    </style>
+    </script>
 </head>
-<body>
+<body class="bg-[#0D0E15] text-gray-200 font-sans min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- ADMIN SIGN IN LOCK EKRANI -->
-    <div id="admin-lock-screen">
-        <div class="lock-card">
-            <img src="https://hizliresim.com/skg8wxux" alt="BloxGame Logo" class="lock-logo" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png'">
-            <h2>Admin Sign In</h2>
-            <form id="admin-form" class="lock-input-group">
-                <input type="password" id="admin-pass" class="lock-input" placeholder="Enter Password" required autofocus>
-                <button type="submit" class="lock-btn">Sign In</button>
-            </form>
-            <div id="error-text" class="error-msg">Incorrect password!</div>
+    <!-- TOP NAVBAR -->
+    <header class="h-16 bg-[#151722] border-b border-gray-800/80 px-4 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-4">
+            <button class="text-gray-400 hover:text-white md:hidden"><i class="fa-solid fa-bars text-xl"></i></button>
+            <a href="/" class="flex items-center gap-2 text-2xl font-black text-amber-500 tracking-wider">
+                <i class="fa-solid fa-cube text-amber-500"></i> BUXIFY
+            </a>
         </div>
-    </div>
 
-    <!-- PROFILE BIO VERIFICATION MODAL -->
-    <div id="login-modal" class="modal-overlay">
-        <div class="modal-card">
-            <span class="close-modal" id="close-modal-btn">&times;</span>
-            <div class="modal-title">Roblox Verification</div>
-            
-            <div id="step-1" class="lock-input-group">
-                <input type="text" id="roblox-username-input" class="lock-input" placeholder="Roblox Username">
-                <button id="btn-get-code" class="lock-btn">Get Verification Code</button>
-            </div>
+        <!-- SAĞ ÜST: Kullanıcı Profil & Bakiye / Login -->
+        <div class="flex items-center gap-3">
+            <!-- Giriş Yapmış Kullanıcı Görünümü (Varsayılan Hidden) -->
+            <div id="user-logged-in" class="flex items-center gap-3">
+                <!-- Bakiye Kutusu -->
+                <div class="bg-[#1D1F2C] border border-amber-500/30 rounded-lg px-3 py-1.5 flex items-center gap-2">
+                    <i class="fa-solid fa-[#F59E0B] fa-coins text-amber-400"></i>
+                    <span id="user-balance" class="text-white font-extrabold text-sm">0.00</span>
+                    <span class="text-xs font-bold text-amber-400">BUX</span>
+                </div>
 
-            <div id="step-2" style="display: none;">
-                <p class="modal-desc">Copy the code below and paste it into your Roblox profile description (About):</p>
-                <div class="code-box" id="generated-code">BLOX-0000</div>
-                <div class="lock-input-group">
-                    <button id="btn-verify-bio" class="lock-btn">I Added Code, Verify Me</button>
+                <!-- Profil Alanı (Avatar + Isim) -->
+                <div class="flex items-center gap-2.5 bg-[#1D1F2C] p-1.5 pr-3 rounded-lg border border-gray-800">
+                    <img id="user-avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png" alt="Avatar" class="w-7 h-7 rounded-md border border-gray-700 object-cover">
+                    <span id="user-display-name" class="text-xs font-bold text-gray-200">Kullanıcı</span>
                 </div>
             </div>
-            <div id="modal-error" class="error-msg"></div>
-        </div>
-    </div>
 
-    <!-- KULLANICI PROFİL MODALI -->
-    <div id="profile-modal" class="modal-overlay">
-        <div class="modal-card">
-            <span class="close-modal" id="close-profile-btn">&times;</span>
-            <div class="profile-header">
-                <img src="" id="modal-profile-avatar" class="profile-avatar-large" alt="Avatar" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png'">
-                <div class="profile-user-info">
-                    <div class="profile-username" id="modal-profile-username">User</div>
-                    <div class="profile-id">ROBLOX ID: <span id="modal-profile-id">000000</span></div>
-                    <div class="profile-badges">
-                        <span class="badge-vip">VIP MEMBER</span>
-                        <span class="badge-level">LEVEL 1</span>
+            <!-- Giriş Yapmamış İse Gösterilecek Buton -->
+            <button id="btn-open-login" onclick="document.getElementById('login-modal').classList.remove('hidden')" class="bg-amber-500 hover:bg-amber-400 text-gray-950 font-black px-5 py-2 rounded-lg text-sm transition-all shadow-lg shadow-amber-500/20">
+                Log in
+            </button>
+        </div>
+    </header>
+
+    <!-- ANA DÜZEN (Sidebar + Content + Chat) -->
+    <div class="flex-1 flex overflow-hidden">
+
+        <!-- 1. SOL SIDEBAR -->
+        <aside class="w-56 bg-[#151722] border-r border-gray-800/80 hidden md:flex flex-col justify-between p-3 shrink-0">
+            <div class="space-y-6">
+                <!-- Kategoriler -->
+                <div>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-3 mb-2">Oyunlar</div>
+                    <nav class="space-y-1">
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-amber-500/10 text-amber-400 font-bold text-sm">
+                            <i class="fa-solid fa-bomb w-4"></i> Mines
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
+                            <i class="fa-solid fa-circle-notch w-4"></i> Roulette
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
+                            <i class="fa-solid fa-dice w-4"></i> Slots
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
+                            <i class="fa-solid fa-[#F59E0B] fa-chart-line w-4"></i> Crash
+                        </a>
+                    </nav>
+                </div>
+
+                <div>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-3 mb-2">Topluluk</div>
+                    <nav class="space-y-1">
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
+                            <i class="fa-brands fa-discord w-4"></i> Discord
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 text-sm font-medium transition-all">
+                            <i class="fa-solid fa-headset w-4"></i> Destek
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 2. ORTA İÇERİK ALANI -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+
+            <!-- Banner / Hero Section (Görseldeki Tarz) -->
+            <div class="bg-gradient-to-r from-[#1D1F2C] to-[#151722] border border-gray-800 rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-3 max-w-xl z-10">
+                    <h1 class="text-3xl font-black text-white leading-tight">
+                        Bet, win, and <span class="text-amber-400">cash out</span> your way.
+                    </h1>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Roblox hesabınla anında giriş yap, Mines ve Roulette gibi oyunlarla bakiyeni katla!
+                    </p>
+                    <div class="flex items-center gap-4 text-xs font-bold text-gray-300 pt-2">
+                        <span><i class="fa-solid fa-bolt text-amber-400 mr-1"></i> Anında Doğrulama</span>
+                        <span><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> %100 Adil Sistem</span>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-stats-grid">
-                <div class="stat-card">
-                    <div class="label">Wagered</div>
-                    <div class="value">💎 0.00</div>
+            <!-- MINES OYUN ALANI -->
+            <section class="bg-[#151722] border border-gray-800 rounded-2xl p-4 md:p-6 max-w-4xl mx-auto shadow-2xl">
+                <div class="flex flex-col md:flex-row gap-6">
+                    
+                    <!-- Sol: Kontrol Paneli -->
+                    <div class="bg-[#1D1F2C] border border-gray-800/80 p-5 rounded-xl flex flex-col justify-between gap-5 w-full md:w-80">
+                        <div class="space-y-4">
+                            <h2 class="text-sm font-bold text-gray-200 uppercase tracking-wider border-b border-gray-800 pb-2">Mines Ayarları</h2>
+
+                            <div>
+                                <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Bahis Miktarı (BUX)</label>
+                                <input type="number" id="mines-bet-amount" value="10" min="1" step="1" 
+                                    class="w-full bg-[#151722] border border-gray-700 rounded-lg p-2.5 text-white font-bold text-sm focus:outline-none focus:border-amber-500">
+                            </div>
+
+                            <div>
+                                <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Mayın Sayısı</label>
+                                <select id="mines-count" 
+                                    class="w-full bg-[#151722] border border-gray-700 rounded-lg p-2.5 text-white font-bold text-sm focus:outline-none focus:border-amber-500">
+                                    <option value="1">1 Mayın</option>
+                                    <option value="3" selected>3 Mayın</option>
+                                    <option value="5">5 Mayın</option>
+                                    <option value="10">10 Mayın</option>
+                                    <option value="15">15 Mayın</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button id="btn-start-mines" onclick="MinesGame.startGame()" 
+                                class="w-full bg-amber-500 hover:bg-amber-400 font-black py-3.5 px-4 rounded-xl text-gray-950 shadow-lg shadow-amber-500/10 transition-all">
+                                Oyunu Başlat
+                            </button>
+
+                            <button id="btn-cashout-mines" onclick="MinesGame.cashout()" 
+                                class="w-full bg-emerald-500 hover:bg-emerald-400 font-black py-3.5 px-4 rounded-xl text-gray-950 shadow-lg shadow-emerald-500/10 transition-all hidden">
+                                Cashout
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sağ: Grid -->
+                    <div class="flex-1 flex justify-center items-center bg-[#1D1F2C]/50 border border-gray-800/80 p-6 rounded-xl min-h-[340px]">
+                        <div id="mines-grid" class="grid grid-cols-5 gap-2.5 w-full max-w-[320px]"></div>
+                    </div>
+
                 </div>
-                <div class="stat-card">
-                    <div class="label">Total Wins</div>
-                    <div class="value">💎 0.00</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Games</div>
-                    <div class="value">0</div>
+            </section>
+
+        </main>
+
+        <!-- 3. SAĞ CANLI CHAT (Görseldeki Birebir Sağ Bar) -->
+        <aside class="w-72 bg-[#151722] border-l border-gray-800/80 hidden lg:flex flex-col justify-between shrink-0">
+            <div class="p-3 border-b border-gray-800 flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-300 flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-amber-500"></i> Canlı Chat
+                </span>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full font-bold">● 72 Online</span>
+            </div>
+
+            <!-- Mesaj Listesi -->
+            <div class="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
+                <div class="bg-[#1D1F2C] p-2.5 rounded-lg border border-gray-800/50">
+                    <div class="flex items-center justify-between text-[10px] text-gray-400 mb-1">
+                        <span class="font-bold text-amber-400">Beedu2001</span>
+                        <span>12:24</span>
+                    </div>
+                    <p class="text-gray-300">Mines'ta 5x yakaladım harika!</p>
                 </div>
             </div>
 
-            <button class="btn-logout" id="btn-logout">Log Out</button>
+            <!-- Mesaj Gönderme Kutusu -->
+            <div class="p-3 border-t border-gray-800 bg-[#1D1F2C]">
+                <input type="text" placeholder="Mesajını yaz..." class="w-full bg-[#151722] border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- ROBLOX GİRİŞ MODAL (Görseldeki Login Tarzı) -->
+    <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#151722] border border-gray-800 rounded-2xl w-full max-w-md p-6 space-y-5 relative">
+            <button onclick="document.getElementById('login-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-1">
+                <h3 class="text-xl font-black text-white">Roblox İle Giriş Yap</h3>
+                <p class="text-xs text-gray-400">Roblox profil açıklamanıza verilen kodu ekleyerek doğrulayın.</p>
+            </div>
+
+            <!-- Seçenekler -->
+            <div class="space-y-3 pt-2">
+                <button class="w-full bg-[#1D1F2C] hover:bg-gray-800 border border-gray-700 p-3 rounded-xl flex items-center justify-center gap-3 font-bold text-sm text-white transition-all">
+                    <i class="fa-solid fa-gamepad text-red-500 text-lg"></i> Roblox Bio İle Doğrula
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- ANA SİTE İÇERİĞİ -->
-    <div class="main-container">
-        <header>
-            <div class="header-left">
-                <a href="/" class="logo">BLOX<span>GAME</span></a>
-                <div class="nav-links">
-                    <a href="#">Affiliates</a>
-                    <a href="#">Rewards</a>
-                    <a href="#">Leaderboard</a>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="balance-box">
-                    <span>💎</span>
-                    <span id="user-balance">0.00</span> RBX
-                </div>
-                
-                <button class="btn-login" id="login-button">Log In</button>
-
-                <div class="user-profile-box" id="user-profile-box">
-                    <img src="" alt="Avatar" class="user-avatar" id="header-avatar" onerror="this.onerror=null; this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-1-Png/150/150/AvatarHeadshot/Png';">
-                    <span class="user-name" id="header-username">User</span>
-                </div>
-            </div>
-        </header>
-
-        <div class="items-bar">
-            <div class="item-card"><span class="item-name">Valkyrie</span><span class="item-price">💎 50,000</span></div>
-            <div class="item-card"><span class="item-name">Dominus</span><span class="item-price">💎 120,000</span></div>
-            <div class="item-card"><span class="item-name">Red Crown</span><span class="item-price">💎 12,500</span></div>
-            <div class="item-card"><span class="item-name">Fedora</span><span class="item-price">💎 3,200</span></div>
-            <div class="item-card"><span class="item-name">Katana</span><span class="item-price">💎 850</span></div>
-        </div>
-
-        <div class="content-area">
-            <div class="banners-grid">
-                <div class="banner-card banner-deposit">
-                    <h2>20% DEPOSIT BONUS</h2>
-                    <p>Use code BLOX2026 on your next deposit</p>
-                    <button class="banner-btn">Claim Now</button>
-                </div>
-                <div class="banner-card banner-race">
-                    <h2>$5,000 DAILY RACE</h2>
-                    <p>Wager on games to climb the board</p>
-                    <button class="banner-btn">View Race</button>
-                </div>
-                <div class="banner-card banner-discord">
-                    <h2>COMMUNITY DISCORD</h2>
-                    <p>Join for giveaways and chat</p>
-                    <button class="banner-btn">Join Server</button>
-                </div>
-            </div>
-
-            <div>
-                <div class="section-title">BloxGame Originals</div>
-                <div class="games-grid">
-                    <div class="game-card card-battles"><h3>BATTLES</h3><span>PVP CASES</span></div>
-                    <div class="game-card card-cases"><h3>CASES</h3><span>UNBOXING</span></div>
-                    <div class="game-card card-mines"><h3>MINES</h3><span>MULTIPLIER</span></div>
-                    <div class="game-card card-bj"><h3>BLACKJACK</h3><span>CARDS</span></div>
-                    <div class="game-card card-towers"><h3>TOWERS</h3><span>CLIMB</span></div>
-                    <div class="game-card card-upgrade"><h3>UPGRADE</h3><span>RISK & WIN</span></div>
-                    <div class="game-card card-dice"><h3>DICE</h3><span>CLASSIC</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <aside class="chat-sidebar">
-        <div class="chat-top-header">
-            <span>GLOBAL CHAT</span>
-            <span style="color: #10b981;">🟢 84 ONLINE</span>
-        </div>
-        <div class="rain-pool-box">
-            <div>
-                <div style="font-size: 10px; color: #8b92a2;">Active Rain</div>
-                <div style="font-size: 10px; opacity: 0.6;">⏱️ 12:45</div>
-            </div>
-            <div class="rain-amount">💎 1,800 RBX</div>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="chat-row">
-                <span class="badge">LVL 12</span>
-                <div>
-                    <span class="chat-uname">trout7126:</span>
-                    <div class="chat-text">gg nice multiplier on mines</div>
-                </div>
-            </div>
-            <div class="chat-row">
-                <span class="badge">LVL 4</span>
-                <div>
-                    <span class="chat-uname">arabella:</span>
-                    <div class="chat-text">who is playing case battles?</div>
-                </div>
-            </div>
-        </div>
-        <div class="chat-footer">
-            <input type="text" id="chat-input" placeholder="Type a message...">
-        </div>
-    </aside>
-
+    <!-- SCRIPT DOSYALARI -->
     <script>
-        // Admin Kilit Ekranı Mantığı
-        const lockScreen = document.getElementById('admin-lock-screen');
-        const adminForm = document.getElementById('admin-form');
-        const adminPass = document.getElementById('admin-pass');
-        const errorText = document.getElementById('error-text');
-
-        if (sessionStorage.getItem('admin_authenticated') === 'true') {
-            lockScreen.style.display = 'none';
-        }
-
-        adminForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (adminPass.value === 'epstein123') {
-                sessionStorage.setItem('admin_authenticated', 'true');
-                lockScreen.style.display = 'none';
-            } else {
-                errorText.style.display = 'block';
-                adminPass.value = '';
-            }
-        });
-
-        // Bio Verification Modal Mantığı
-        const loginBtn = document.getElementById('login-button');
-        const loginModal = document.getElementById('login-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const step1 = document.getElementById('step-1');
-        const step2 = document.getElementById('step-2');
-        const btnGetCode = document.getElementById('btn-get-code');
-        const btnVerifyBio = document.getElementById('btn-verify-bio');
-        const generatedCodeEl = document.getElementById('generated-code');
-        const modalError = document.getElementById('modal-error');
-
-        // Profile Modal Mantığı
-        const profileBox = document.getElementById('user-profile-box');
-        const profileModal = document.getElementById('profile-modal');
-        const closeProfileBtn = document.getElementById('close-profile-btn');
-        const btnLogout = document.getElementById('btn-logout');
-
-        let currentUsername = '';
-        let currentCode = '';
-
-        loginBtn.addEventListener('click', () => {
-            loginModal.style.display = 'flex';
-            modalError.style.display = 'none';
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            loginModal.style.display = 'none';
-        });
-
-        btnGetCode.addEventListener('click', async () => {
-            const username = document.getElementById('roblox-username-input').value.trim();
-            if (!username) {
-                showModalError('Please enter a username');
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/generate-code', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    currentUsername = username;
-                    currentCode = data.code;
-                    generatedCodeEl.textContent = data.code;
-                    step1.style.display = 'none';
-                    step2.style.display = 'block';
-                    modalError.style.display = 'none';
-                } else {
-                    showModalError(data.message);
+        window.BuxifyBalance = {
+            updateUI(newBalance) {
+                const balEl = document.getElementById('user-balance');
+                if (balEl && newBalance !== undefined) {
+                    balEl.textContent = parseFloat(newBalance).toFixed(2);
                 }
-            } catch (err) {
-                showModalError('Connection error');
+            }
+        };
+
+        // Sayfa Yüklendiğinde Oturumu ve Bakiyeyi Senkronize Et
+        document.addEventListener('DOMContentLoaded', async () => {
+            const cookies = document.cookie.split('; ');
+            const userCookie = cookies.find(row => row.startsWith('user_session='));
+            if (userCookie) {
+                try {
+                    const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
+                    if (userData && userData.id) {
+                        // Profil Bilgilerini Bas
+                        document.getElementById('user-display-name').textContent = userData.username || 'Kullanıcı';
+                        if (userData.avatar) {
+                            document.getElementById('user-avatar').src = userData.avatar;
+                        }
+                        document.getElementById('btn-open-login').classList.add('hidden');
+
+                        // Bakiyeyi Çek
+                        const res = await fetch(`/api/user-balance?user_id=${userData.id}`);
+                        const data = await res.json();
+                        if (data.success) {
+                            window.BuxifyBalance.updateUI(data.balance);
+                        }
+                    }
+                } catch(e) {
+                    console.error("Session hatası", e);
+                }
             }
         });
-
-        btnVerifyBio.addEventListener('click', async () => {
-            try {
-                const res = await fetch('/api/verify-bio', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: currentUsername, expectedCode: currentCode })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    loginModal.style.display = 'none';
-                    location.reload();
-                } else {
-                    showModalError(data.message);
-                }
-            } catch (err) {
-                showModalError('Verification failed');
-            }
-        });
-
-        function showModalError(msg) {
-            modalError.textContent = msg;
-            modalError.style.display = 'block';
-        }
-
-        // Profil kutusuna tıklandığında yeni profil sayfasına yönlendir
-profileBox.addEventListener('click', () => {
-    window.location.href = '/profile.html';
-});
-        // Cookie Okuma & Kullanıcı Profilini Doldurma
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-            return null;
-        }
-
-        const userCookie = getCookie('user_session');
-        if (userCookie) {
-            try {
-                const userData = JSON.parse(decodeURIComponent(userCookie));
-
-                const usernameEl = document.getElementById('header-username');
-                const avatarEl = document.getElementById('header-avatar');
-                const balanceEl = document.getElementById('user-balance');
-
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (profileBox) profileBox.style.display = 'flex';
-                
-                if (usernameEl) usernameEl.textContent = userData.username;
-                if (avatarEl && userData.avatar) avatarEl.src = userData.avatar;
-                if (balanceEl) balanceEl.textContent = Number(userData.balance).toLocaleString();
-
-                // Profile Modal Doldurma
-                document.getElementById('modal-profile-username').textContent = userData.username;
-                document.getElementById('modal-profile-id').textContent = userData.id || 'N/A';
-                if (userData.avatar) {
-                    document.getElementById('modal-profile-avatar').src = userData.avatar;
-                }
-            } catch(err) {
-                console.error("User session reading error:", err);
-            }
-        }
     </script>
+    <script src="/js/games/mines.js"></script>
 </body>
 </html>
