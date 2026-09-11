@@ -33,7 +33,8 @@ module.exports = async (req, res) => {
                 console.error('Bakiye çekme hatası:', err);
             }
         }
-        return res.json({ success: true, balance: 1000.00 });
+        // Kullanıcı veritabanında henüz yoksa varsayılan bakiye 0.00
+        return res.json({ success: true, balance: 0.00 });
     }
 
     // 2. POST: Bakiyeden Düş / Kazanç Ekle (/api/user-balance)
@@ -44,14 +45,14 @@ module.exports = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Eksik parametreler.' });
         }
 
-        const changeAmount = parseFloat(amount); // Negatif ise düşer (bahis), pozitif ise ekler (kazanç)
+        const changeAmount = parseFloat(amount); // Negatif sayı = Bahis (düşer), Pozitif sayı = Kazanç (ekler)
 
         if (pool) {
             const client = await pool.connect();
             try {
-                await client.query('BEGIN'); // SQL İşlemini başlat
+                await client.query('BEGIN');
 
-                // Çakışmaları önlemek için satırı kilitleyerek bakiyeyi çek
+                // Satırı kilitleyerek bakiyeyi çek
                 const userRes = await client.query(
                     'SELECT balance, wager, wins FROM users WHERE id = $1 FOR UPDATE',
                     [user_id]
@@ -66,7 +67,7 @@ module.exports = async (req, res) => {
                 let wager = parseFloat(userRes.rows[0].wager || 0);
                 let wins = parseFloat(userRes.rows[0].wins || 0);
 
-                // Yetersiz Bakiye Kontrolü (Bahis miktarının bakiyeden büyük olup olmadığını denetle)
+                // Yetersiz Bakiye Kontrolü
                 if (changeAmount < 0 && currentBalance < Math.abs(changeAmount)) {
                     await client.query('ROLLBACK');
                     return res.status(400).json({ success: false, message: 'Yetersiz bakiye!' });
@@ -80,13 +81,13 @@ module.exports = async (req, res) => {
                     wins += changeAmount;
                 }
 
-                // 1. Users tablosundaki bakiyeyi ve istatistikleri güncelle
+                // Users tablosundaki bakiyeyi ve istatistikleri güncelle
                 await client.query(
                     'UPDATE users SET balance = $1, wager = $2, wins = $3 WHERE id = $4',
                     [newBalance, wager, wins, user_id]
                 );
 
-                // 2. Transactions tablosuna işlem geçmişini kaydet
+                // Transactions tablosuna işlem geçmişini kaydet
                 await client.query(
                     'INSERT INTO transactions (user_id, type, amount, balance_after, game_name) VALUES ($1, $2, $3, $4, $5)',
                     [user_id, type || 'bet', changeAmount, newBalance, game_name || null]
@@ -110,8 +111,7 @@ module.exports = async (req, res) => {
             }
         }
 
-        // DB Bağlantısı yoksa fallback (lokal test modunda geçici yanıt)
-        return res.json({ success: true, new_balance: 1000.00 });
+        return res.json({ success: true, new_balance: 0.00 });
     }
 
     return res.status(405).json({ message: 'Method Not Allowed' });
